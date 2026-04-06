@@ -1,0 +1,3732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOBRHub - Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f3f2f1;
+            color: #323130;
+        }
+        .alert-banner {
+            background: #fff4ce;
+            border-left: 4px solid #f59f00;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        .header {
+            background: #ffffff;
+            padding: 8px 16px;
+            border-bottom: 1px solid #e1dfdd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            box-shadow: 0 0.5px 2px rgba(0,0,0,0.05);
+        }
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0078d4;
+            font-size: 14px;
+        }
+        .breadcrumb span {
+            color: #666;
+        }
+        .breadcrumb-dropdown {
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            padding: 4px 8px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            color: #323130;
+            cursor: pointer;
+            outline: none;
+        }
+        .breadcrumb-dropdown:hover {
+            border-color: #0078d4;
+        }
+        .breadcrumb-dropdown:focus {
+            border-color: #0078d4;
+        }
+        .header-controls {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .notifications-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .notifications-icon:hover {
+            background: #f3f2f1;
+            border-radius: 2px;
+        }
+        .bell-icon {
+            font-size: 18px;
+        }
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background: #a80000;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 16px;
+            text-align: center;
+        }
+        .dropdown {
+            padding: 6px 12px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            color: #323130;
+        }
+        .dropdown:hover {
+            border-color: #323130;
+        }
+        .dropdown:focus {
+            border-color: #0078d4;
+            outline: none;
+        }
+        .btn-primary {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.15s;
+        }
+        .btn-primary:hover {
+            background: #005a9e;
+        }
+        .btn-primary:active {
+            background: #004578;
+        }
+        .main-container {
+            display: flex;
+            height: calc(100vh - 120px);
+        }
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 24px 24px 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .tabs {
+            display: flex;
+            align-items: center;
+            gap: 0px;
+            background: transparent;
+            padding: 0;
+            border-bottom: 1px solid #e1dfdd;
+        }
+        .tab {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 0;
+            border-bottom: 2px solid transparent;
+            font-size: 13px;
+            font-weight: 400;
+            color: #605e5c;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            margin-bottom: -1px;
+        }
+        .tab.active {
+            background: transparent;
+            color: #005a9e;
+            border-bottom-color: #0078d4;
+            font-weight: 600;
+        }
+        .tab:hover:not(.active) {
+            color: #323130;
+            background: transparent;
+        }
+        .tab-separator {
+            width: 1px;
+            height: 24px;
+            background: #8a8886;
+            margin: 0 4px;
+            flex-shrink: 0;
+        }
+        .extension-tab {
+            opacity: 0.7;
+            font-size: 13px;
+        }
+        .extension-tab:hover {
+            opacity: 1;
+        }
+        .coming-soon-badge {
+            background: #f7630c;
+            color: white;
+            font-size: 9px;
+            font-weight: 600;
+            padding: 2px 5px;
+            border-radius: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .add-tab {
+            background: #f3f2f1;
+            border: 1px dashed #8a8886;
+            color: #605e5c;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .add-tab:hover {
+            background: #e1dfdd;
+            border-color: #0078d4;
+            color: #0078d4;
+        }
+        /* Tab Dropdown for Deployment Actions */
+        .tab-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .tab-dropdown-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            border: none;
+            border-bottom: 2px solid transparent;
+            background: transparent;
+            font-size: 13px;
+            font-weight: 400;
+            color: #605e5c;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .tab-dropdown-btn:hover {
+            color: #323130;
+        }
+        .tab-dropdown-btn.active {
+            color: #005a9e;
+            border-bottom-color: #0078d4;
+            font-weight: 600;
+        }
+        .tab-dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            box-shadow: 0 3.2px 7.2px rgba(0,0,0,0.13);
+            min-width: 180px;
+            z-index: 1000;
+            margin-top: 4px;
+        }
+        .tab-dropdown-menu.show {
+            display: block;
+        }
+        .tab-dropdown-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #323130;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.15s;
+        }
+        .tab-dropdown-item:hover {
+            background: #f3f2f1;
+        }
+        .tab-dropdown-item:active {
+            background: #edebe9;
+        }
+        .clouds-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .cloud-card {
+            background: #ffffff;
+            border: 1px solid;
+            border-radius: 4px;
+            padding: 12px;
+            width: fit-content;
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.03);
+        }
+        .cloud-card.public { border-color: #0078d4; }
+        .cloud-card.gal { border-color: #ca5010; }
+        .cloud-card.gcch { border-color: #0b6a0b; }
+        .cloud-card.dod { border-color: #8764b8; }
+        .cloud-card.usnat { border-color: #e3008c; }
+        .cloud-header {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e1dfdd;
+        }
+        .cloud-header.public { color: #0078d4; }
+        .cloud-header.gal { color: #ca5010; }
+        .cloud-header.gcch { color: #0b6a0b; }
+        .cloud-header.dod { color: #8764b8; }
+        .cloud-header.usnat { color: #e3008c; }
+        .rings-list {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+        }
+        .ring-item {
+            padding: 10px 12px;
+            background: #faf9f8;
+            border-radius: 2px;
+            border: 1px solid #e1dfdd;
+            min-width: 280px;
+            max-width: 400px;
+            flex: 1;
+        }
+        .ring-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .ring-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+        }
+        .status-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .status-icon.success {
+            background: #107c10;
+            color: white;
+        }
+        .status-icon.failed {
+            background: #a80000;
+            color: white;
+        }
+        .status-icon.warning {
+            background: #f7630c;
+            color: white;
+        }
+        .status-icon.progress {
+            background: #5B9BD5;
+            color: white;
+        }
+        .ring-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+        .lkg-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: #dff6dd;
+            border: 1px solid #107c10;
+            border-radius: 2px;
+            padding: 4px 8px;
+            margin-left: auto;
+            margin-right: 8px;
+        }
+        .lkg-badge-icon {
+            font-size: 10px;
+            color: #107c10;
+        }
+        .lkg-badge-text {
+            font-size: 10px;
+            font-weight: 600;
+            color: #107c10;
+            letter-spacing: 0.5px;
+        }
+        .lkg-badge-version {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: #107c10;
+        }
+        .lkg-badge-version-link {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: #107c10;
+            text-decoration: underline;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .lkg-badge-version-link:hover {
+            color: #0d5e0d;
+        }
+        .lkg-badge-version-link::after {
+            content: "↗";
+            font-size: 8px;
+            opacity: 0.8;
+        }
+        .ring-link {
+            color: #0078d4;
+            font-size: 11px;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            background: #faf9f8;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .ring-link:hover {
+            background: #f3f2f1;
+            border-color: #0078d4;
+        }
+        .deployment-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .version-row {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+        .version-row:last-child {
+            margin-bottom: 0;
+        }
+        .version-row-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .version-badge {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .version-badge.pink { background: #e3008c; }
+        .version-badge.cyan { background: #00b7c3; }
+        .version-badge.orange { background: #f7630c; }
+        .version-badge.yellow { background: #ffaa44; }
+        .version-badge.blue { background: #0078d4; }
+        .version-badge.purple { background: #8764b8; }
+        .version-number {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 600;
+            color: #323130;
+            font-size: 12px;
+        }
+        .version-number-link {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 600;
+            color: #0078d4;
+            font-size: 12px;
+            text-decoration: underline;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .version-number-link:hover {
+            color: #005a9e;
+        }
+        .version-number-link::after {
+            content: "↗";
+            font-size: 10px;
+            opacity: 0.8;
+        }
+        .version-timestamp {
+            font-size: 10px;
+            color: #8a8886;
+            margin-left: 20px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .version-meta {
+            color: #8a8886;
+            font-size: 11px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e8e8e8;
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 4px 0;
+            display: flex;
+        }
+        .progress-segment {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        .deployment-meta {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 11px;
+            color: #605e5c;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #e1dfdd;
+        }
+        .deployment-history {
+            background: white;
+            border-radius: 2px;
+            padding: 20px;
+            margin-top: 24px;
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.03);
+            border: 1px solid #e1dfdd;
+            max-width: 1400px;
+            width: 90%;
+        }
+        .history-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: #323130;
+        }
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .history-table th {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 2px solid #e1dfdd;
+            color: #605e5c;
+            font-weight: 600;
+            font-size: 11px;
+            background: #faf9f8;
+        }
+        .history-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e1dfdd;
+        }
+        .history-table tr:hover {
+            background: #faf9f8;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-dot.success { background: #107c10; }
+        .status-dot.failed { background: #a80000; }
+        .build-link {
+            color: #0078d4;
+            text-decoration: underline;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .build-link:hover {
+            color: #005a9e;
+        }
+        .build-link::after {
+            content: "↗";
+            font-size: 10px;
+            opacity: 0.8;
+        }
+        .action-icon {
+            color: #0078d4;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        /* Build Details Slide-out Panel */
+        .build-details-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            display: none;
+        }
+        .build-details-overlay.show {
+            display: block;
+        }
+        .build-details-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 600px;
+            max-height: 90vh;
+            background: white;
+            box-shadow: 0 6.4px 14.4px rgba(0,0,0,0.132), 0 1.2px 3.6px rgba(0,0,0,0.108);
+            border: 1px solid #e1dfdd;
+            border-radius: 4px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+        }
+        .build-details-panel.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+        .build-details-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e1dfdd;
+            background: #faf9f8;
+            border-radius: 4px 4px 0 0;
+        }
+        .build-details-title-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .build-details-title-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #323130;
+            margin: 0;
+        }
+        .close-panel-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #605e5c;
+            padding: 8px 12px;
+            line-height: 1;
+            border-radius: 2px;
+            transition: all 0.15s;
+        }
+        .close-panel-btn:hover {
+            color: #323130;
+            background: #edebe9;
+        }
+        .close-panel-btn:active {
+            background: #e1dfdd;
+        }
+        .build-details-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .build-info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+        .info-label {
+            color: #605e5c;
+            font-weight: 600;
+            min-width: 100px;
+        }
+        .info-value {
+            color: #323130;
+        }
+        .info-link {
+            color: #0078d4;
+            text-decoration: none;
+        }
+        .info-link:hover {
+            text-decoration: underline;
+        }
+        .build-details-tabs {
+            display: flex;
+            border-bottom: 1px solid #e1dfdd;
+            padding: 0 24px;
+            background: white;
+        }
+        .build-tab {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #605e5c;
+            border-bottom: 2px solid transparent;
+            transition: all 0.15s;
+        }
+        .build-tab.active {
+            color: #005a9e;
+            border-bottom-color: #0078d4;
+            font-weight: 600;
+        }
+        .build-tab:hover:not(.active) {
+            color: #323130;
+        }
+        .build-details-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 24px;
+            max-height: calc(90vh - 200px);
+        }
+        .stages-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .stage-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #faf9f8;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            transition: all 0.15s;
+        }
+        .stage-item:hover {
+            background: white;
+            border-color: #0078d4;
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.05);
+        }
+        .stage-status-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        .stage-status-icon.status-success {
+            background: #dff6dd;
+            color: #107c10;
+        }
+        .stage-status-icon.status-progress {
+            background: #fff4ce;
+            color: #8a5700;
+            animation: spin 2s linear infinite;
+        }
+        .stage-status-icon.status-failed {
+            background: #fde7e9;
+            color: #a80000;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .stage-info {
+            flex: 1;
+        }
+        .stage-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 4px;
+        }
+        .stage-meta {
+            font-size: 12px;
+            color: #605e5c;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .stages-filter-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: #faf9f8;
+            border-bottom: 1px solid #e1dfdd;
+            margin-bottom: 16px;
+        }
+        .stages-filter-label {
+            font-size: 13px;
+            color: #323130;
+            font-weight: 600;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #8a8886;
+            transition: 0.3s;
+            border-radius: 20px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #0078d4;
+        }
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        .stage-item[data-stage-status="completed"] {
+            display: none;
+        }
+        .stage-item[data-stage-status="completed"].show-all {
+            display: flex;
+        }
+        /* Deployment Actions History Styles */
+        .deployment-actions-container {
+            background: white;
+            border-radius: 2px;
+            padding: 20px;
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.03);
+            border: 1px solid #e1dfdd;
+            margin-top: 8px;
+        }
+        .deployment-actions-header {
+            margin-bottom: 20px;
+        }
+        .deployment-actions-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .deployment-actions-header p {
+            font-size: 14px;
+            color: #666;
+        }
+        .deployment-actions-wrapper {
+            overflow-x: auto;
+        }
+        .deployment-actions-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .deployment-actions-table thead {
+            background: #faf9f8;
+            border-bottom: 2px solid #e1dfdd;
+        }
+        .deployment-actions-table th {
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #323130;
+            font-size: 12px;
+        }
+        .deployment-actions-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e1dfdd;
+            color: #323130;
+            font-size: 13px;
+        }
+        .deployment-actions-table tbody tr:hover {
+            background: #f3f2f1;
+        }
+        .action-type-badge {
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .action-type-badge.rollback {
+            background: #fde7e9;
+            color: #a80000;
+        }
+        .action-type-badge.poison {
+            background: #fff4ce;
+            color: #f7630c;
+        }
+        .action-type-badge.breakglass {
+            background: #fde7e9;
+            color: #a80000;
+        }
+        .action-status {
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .action-status.completed {
+            background: #dff6dd;
+            color: #107c10;
+        }
+        .action-status.pending {
+            background: #fff4ce;
+            color: #f7630c;
+        }
+        .empty-state {
+            font-style: italic;
+        }
+        /* Active Policies Styles */
+        .active-policies-section {
+            background: #faf9f8;
+            border-radius: 2px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid #e1dfdd;
+        }
+        .active-policies-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 16px;
+        }
+        .policies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .policy-card {
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            padding: 16px;
+            transition: all 0.15s;
+        }
+        .policy-card:hover {
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.05);
+            border-color: #0078d4;
+        }
+        .policy-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .policy-card .policy-icon {
+            font-size: 18px;
+        }
+        .policy-card .policy-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #323130;
+        }
+        .policy-card .policy-value {
+            font-size: 12px;
+            color: #605e5c;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        .policy-card .policy-meta {
+            font-size: 11px;
+            color: #8a8886;
+        }
+        .policies-header-with-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        .policies-header-with-toggle h3 {
+            margin-bottom: 0;
+        }
+        .expand-toggle-btn {
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 400;
+            color: #605e5c;
+            transition: all 0.15s;
+            line-height: 1;
+        }
+        .expand-toggle-btn:hover {
+            background: #f3f2f1;
+            border-color: #8a8886;
+            color: #323130;
+        }
+        .policies-grid.collapsed {
+            display: none;
+        }
+        .actions-toolbar {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e1dfdd;
+        }
+        .toolbar-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .toolbar-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #605e5c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .toolbar-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .toolbar-action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            color: #323130;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .toolbar-action-btn:hover {
+            background: #f3f2f1;
+            border-color: #323130;
+        }
+        .toolbar-action-btn:active {
+            background: #edebe9;
+        }
+        .toolbar-action-btn.toolbar-action-critical {
+            border-color: #a80000;
+            color: #a80000;
+        }
+        .toolbar-action-btn.toolbar-action-critical:hover {
+            background: #fff5f5;
+            border-color: #d13438;
+        }
+        /* Action Type Tabs */
+        .action-type-tabs {
+            display: flex;
+            border-bottom: 2px solid #e1dfdd;
+            margin-bottom: 24px;
+            gap: 0;
+        }
+        .action-type-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #605e5c;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.15s;
+            background: none;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+        }
+        .action-type-tab.active {
+            color: #005a9e;
+            border-bottom-color: #0078d4;
+            font-weight: 600;
+        }
+        .action-type-tab:hover:not(.active) {
+            color: #323130;
+            background: #f3f2f1;
+        }
+        /* Action Content Panels */
+        .action-content-panel {
+            display: none;
+        }
+        .action-content-panel.active {
+            display: block;
+        }
+        /* Action Pages */
+        .action-page {
+            display: none;
+        }
+        .action-page.active {
+            display: block;
+        }
+        /* Action Selector Dropdown */
+        .action-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .action-selector-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #605e5c;
+        }
+        .action-selector-dropdown {
+            padding: 8px 16px;
+            font-size: 13px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            background: white;
+            color: #323130;
+            cursor: pointer;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-width: 200px;
+        }
+        .action-selector-dropdown:hover {
+            border-color: #323130;
+        }
+        .action-selector-dropdown:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+        /* Currently Poisoned Builds */
+        .poisoned-builds-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .poisoned-builds-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+            margin: 0;
+        }
+        .poisoned-count-badge {
+            background: #fff0f0;
+            color: #a80000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #ffc7c7;
+        }
+        .builds-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .build-list-item {
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.15s;
+        }
+        .build-list-item:hover {
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.05);
+            border-color: #0078d4;
+        }
+        .build-list-item.poisoned {
+            border-left: 4px solid #a80000;
+        }
+        .build-info-section {
+            flex: 1;
+        }
+        .build-number-large {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 4px;
+        }
+        .build-number-large .build-number-link {
+            color: #0078d4;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .build-number-large .build-number-link:hover {
+            color: #106ebe;
+        }
+        .build-number-large .build-number-link::after {
+            content: "↗";
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        .build-meta-info {
+            font-size: 12px;
+            color: #605e5c;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .build-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .poison-reason {
+            background: #fff0f0;
+            border: 1px solid #ffc7c7;
+            border-radius: 2px;
+            padding: 8px 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            color: #323130;
+        }
+        .poison-reason-label {
+            font-weight: 600;
+            color: #a80000;
+        }
+        .build-actions {
+            display: flex;
+            gap: 8px;
+        }
+        /* Tab Styles for Poisoning Page */
+        /* Form Styles */
+        .poison-form-container {
+            max-width: 800px;
+        }
+        .form-section {
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .form-section-header {
+            font-size: 14px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e1dfdd;
+        }
+        .form-field {
+            margin-bottom: 16px;
+        }
+        .form-field:last-child {
+            margin-bottom: 0;
+        }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 6px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+        .action-badge {
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .action-badge.action-poison {
+            background: #fff0f0;
+            color: #a80000;
+            border: 1px solid #ffc7c7;
+        }
+        .action-badge.action-unpoison {
+            background: #f0f9ff;
+            color: #0078d4;
+            border: 1px solid #c7e0f4;
+        }
+        .action-badge.action-rollback {
+            background: #fff4ce;
+            color: #8a5700;
+            border: 1px solid #ffe7a3;
+        }
+        .action-badge.action-breakglass {
+            background: #fef0ff;
+            color: #8e008e;
+            border: 1px solid #f4c7f4;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        .status-badge.status-completed {
+            background: #dff6dd;
+            color: #107c10;
+            border: 1px solid #b7e3b5;
+        }
+        .actions-history-section {
+            margin-bottom: 24px;
+        }
+        .actions-history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        .actions-history-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 8px;
+        }
+        .actions-filters {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .filter-dropdown {
+            padding: 6px 10px;
+            font-size: 13px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            background: white;
+            color: #323130;
+            cursor: pointer;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-width: 150px;
+        }
+        .filter-dropdown:hover {
+            border-color: #323130;
+        }
+        .filter-dropdown:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+        .filter-search {
+            padding: 6px 10px;
+            font-size: 13px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            background: white;
+            color: #323130;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 200px;
+        }
+        .filter-search:hover {
+            border-color: #323130;
+        }
+        .filter-search:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+        .deployment-actions-table th.sortable {
+            cursor: pointer;
+            user-select: none;
+        }
+        .deployment-actions-table th.sortable:hover {
+            background: #f3f2f1;
+        }
+        .sort-indicator {
+            font-size: 10px;
+            color: #8a8886;
+            margin-left: 4px;
+        }
+        .deployment-link {
+            color: #0078d4;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .deployment-link:hover {
+            text-decoration: underline;
+        }
+        /* View Toggle Styles */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            width: 90%;
+            max-width: 1400px;
+        }
+        .view-toggle-left {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .view-toggle-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .view-toggle .tab-separator {
+            width: 1px;
+            height: 28px;
+            background: #e1dfdd;
+            margin: 0 12px;
+        }
+        .toggle-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 400;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            color: #605e5c;
+            border-bottom: 2px solid transparent;
+            margin-right: 0;
+        }
+        .toggle-option.active {
+            color: #005a9e;
+            border-bottom-color: #0078d4;
+            font-weight: 600;
+        }
+        .toggle-option:hover:not(.active) {
+            color: #323130;
+        }
+        .action-button {
+            padding: 6px 16px;
+            background: white;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 400;
+            color: #323130;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+        .action-button:hover {
+            background: #f3f2f1;
+            border-color: #605e5c;
+        }
+        .action-button-primary {
+            background: #0078d4;
+            border-color: #0078d4;
+            color: white;
+        }
+        .action-button-primary:hover {
+            background: #005a9e;
+            border-color: #005a9e;
+        }
+        .action-dropdown {
+            position: relative;
+        }
+        .action-dropdown-button {
+            padding: 6px 16px;
+            background: white;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 400;
+            color: #323130;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+        .action-dropdown-button:hover {
+            background: #f3f2f1;
+            border-color: #605e5c;
+        }
+        .action-dropdown-button span:last-child {
+            font-size: 10px;
+            margin-left: 4px;
+        }
+        .action-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 4px;
+            background: white;
+            border: 1px solid #e1dfdd;
+            border-radius: 2px;
+            box-shadow: 0 3.2px 7.2px rgba(0,0,0,0.08);
+            min-width: 180px;
+            display: none;
+            z-index: 1000;
+        }
+        .action-dropdown-menu.show {
+            display: block;
+        }
+        .action-dropdown-item {
+            padding: 8px 16px;
+            font-size: 13px;
+            color: #323130;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.15s;
+        }
+        .action-dropdown-item:hover {
+            background: #f3f2f1;
+        }
+        .action-dropdown-item:first-child {
+            border-radius: 2px 2px 0 0;
+        }
+        .action-dropdown-item:last-child {
+            border-radius: 0 0 2px 2px;
+        }
+        /* Pipeline Selector in Header */
+        .pipeline-selector-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .pipeline-selector-label {
+            font-size: 12px;
+            font-weight: 400;
+            color: #605e5c;
+        }
+        .pipeline-dropdown-small {
+            padding: 4px 8px;
+            font-size: 12px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            background: white;
+            cursor: pointer;
+            color: #323130;
+            max-width: 200px;
+        }
+        .pipeline-dropdown-small:hover {
+            border-color: #323130;
+        }
+        .data-timeframe {
+            font-size: 11px;
+            color: #605e5c;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: 12px;
+            padding-left: 12px;
+            border-left: 1px solid #e1dfdd;
+        }
+        /* Build Legend */
+        .build-legend {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            background: white;
+            border-radius: 2px;
+            border: 1px solid #e1dfdd;
+            padding: 12px 16px;
+            box-shadow: 0 3.2px 7.2px rgba(0,0,0,0.08);
+            z-index: 100;
+            max-width: 200px;
+            display: none;
+        }
+        .build-legend.show {
+            display: block;
+        }
+        .build-legend-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 10px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 6px;
+            font-size: 11px;
+        }
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .legend-build {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-weight: 600;
+            color: #323130;
+        }
+        .legend-build.build-link {
+            color: #0078d4;
+            text-decoration: none;
+        }
+        .legend-build.build-link:hover {
+            text-decoration: underline;
+        }
+        /* Health Dashboard Styles */
+        .health-dashboard {
+            width: 90%;
+            max-width: 1400px;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .health-card {
+            flex: 1;
+            min-width: 160px;
+            background: white;
+            border-radius: 2px;
+            border: 1px solid #e1dfdd;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.03);
+            transition: transform 0.15s, box-shadow 0.15s;
+            cursor: pointer;
+        }
+        .health-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.05);
+        }
+        .health-card.alert {
+            border-left: 3px solid #a80000;
+        }
+        .health-card.success {
+            border-left: 3px solid #107c10;
+        }
+        .health-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .health-info {
+            flex: 1;
+        }
+        .health-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #323130;
+            line-height: 1.2;
+        }
+        .health-label {
+            font-size: 11px;
+            color: #605e5c;
+            margin-top: 2px;
+            font-weight: 400;
+        }
+        /* Poison Request Modal */
+        .poison-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .poison-modal-overlay.show {
+            display: flex;
+        }
+        .poison-modal {
+            background: white;
+            border-radius: 2px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 6.4px 14.4px rgba(0,0,0,0.15);
+        }
+        .poison-modal-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #e1dfdd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .poison-modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #323130;
+        }
+        .poison-modal-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .poison-modal-body {
+            padding: 32px;
+        }
+        .poison-section {
+            margin-bottom: 32px;
+        }
+        .poison-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 16px;
+        }
+        .poison-form-group {
+            margin-bottom: 20px;
+        }
+        .poison-form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 8px;
+        }
+        .poison-form-label .required {
+            color: #a80000;
+            margin-left: 4px;
+        }
+        .poison-form-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            color: #323130;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .poison-form-input:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+        .poison-form-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            color: #323130;
+            background: white;
+            cursor: pointer;
+        }
+        .poison-form-select:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+        .poison-form-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            color: #323130;
+            font-family: 'Segoe UI', sans-serif;
+            resize: vertical;
+            min-height: 100px;
+        }
+        .poison-form-textarea:focus {
+            outline: none;
+            border-color: #0078d4;
+        }
+        .poison-form-help {
+            font-size: 12px;
+            color: #605e5c;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+        .poison-char-count {
+            font-size: 12px;
+            color: #605e5c;
+            margin-top: 4px;
+        }
+        .poison-radio-group {
+            display: flex;
+            gap: 24px;
+            margin-top: 12px;
+        }
+        .poison-radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .poison-radio-option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .poison-radio-option label {
+            font-size: 13px;
+            color: #323130;
+            cursor: pointer;
+        }
+        .poison-modal-footer {
+            padding: 20px 32px;
+            border-top: 1px solid #e1dfdd;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            background: #faf9f8;
+        }
+        .poison-btn-cancel {
+            padding: 8px 24px;
+            background: white;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #323130;
+            cursor: pointer;
+        }
+        .poison-btn-cancel:hover {
+            background: #f3f2f1;
+        }
+        .poison-btn-submit {
+            padding: 8px 24px;
+            background: #a80000;
+            border: none;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .poison-btn-submit:hover {
+            background: #8a0000;
+        }
+        .poison-btn-secondary {
+            padding: 6px 16px;
+            background: white;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 400;
+            color: #323130;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .poison-btn-secondary:hover {
+            background: #f3f2f1;
+        }
+        .poison-btn-primary-outline {
+            padding: 6px 16px;
+            background: white;
+            border: 1px solid #0078d4;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0078d4;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .poison-btn-primary-outline:hover {
+            background: #e5f1fb;
+        }
+        /* Notification Panel */
+        .notification-panel {
+            position: absolute;
+            top: 60px;
+            right: 24px;
+            width: 360px;
+            max-height: 500px;
+            background: white;
+            border-radius: 2px;
+            border: 1px solid #e1dfdd;
+            box-shadow: 0 3.2px 7.2px rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: none;
+            z-index: 1000;
+        }
+        .notification-panel.show {
+            display: block;
+        }
+        .notification-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e1dfdd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #faf9f8;
+        }
+        .notification-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #323130;
+        }
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .notification-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f3f2f1;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .notification-item:hover {
+            background: #faf9f8;
+        }
+        .notification-item.unread {
+            background: #e5f1fb;
+            border-left: 3px solid #0078d4;
+        }
+        .notification-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+        .notification-item-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+        }
+        .notification-item-time {
+            font-size: 11px;
+            color: #999;
+            white-space: nowrap;
+        }
+        .notification-item-body {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+        .notification-type-icon {
+            display: inline-block;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="alert-banner">
+        <span>⚠</span>
+        <span>As of 06 June, Support Hub access requires Azure VPN or Corpnet.</span>
+    </div>
+    <div class="header">
+        <div style="display: flex; align-items: center; gap: 16px; flex: 1;">
+            <div class="breadcrumb">
+                <span style="color: #0078d4; font-weight: 600;">MOBRHub</span>
+                <span>&gt;</span>
+                <select class="breadcrumb-dropdown" id="serviceSelector">
+                    <option value="broker">Broker</option>
+                    <option value="scc">Skype Consumer Cloud</option>
+                    <option value="teams">Teams</option>
+                    <option value="outlook">Outlook</option>
+                </select>
+                <span>&gt;</span>
+                <select class="breadcrumb-dropdown" id="pipelineSelector">
+                    <option value="main">cosmic-release</option>
+                    <option value="release">Release</option>
+                    <option value="hotfix">Hotfix</option>
+                    <option value="feature">Feature Branch</option>
+                </select>
+            </div>
+            <div class="tabs">
+                <div class="tab active" data-view="service-viz">Visualization</div>
+                <div class="tab-separator"></div>
+                <div class="tab-dropdown">
+                    <button class="tab-dropdown-btn" onclick="toggleActionTabDropdown()">
+                        <span>Deployment Actions</span>
+                        <span style="font-size: 10px; margin-left: 4px;">▼</span>
+                    </button>
+                    <div class="tab-dropdown-menu" id="actionTabDropdownMenu">
+                        <div class="tab-dropdown-item" data-action-view="poison">
+                            <span>☠</span>
+                            <span>Poison</span>
+                        </div>
+                        <div class="tab-dropdown-item" data-action-view="rollback">
+                            <span>🔄</span>
+                            <span>Rollback</span>
+                        </div>
+                        <div class="tab-dropdown-item" data-action-view="breakglass">
+                            <span>🚨</span>
+                            <span>Breakglass</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab add-tab" title="Add Extension">+</div>
+            </div>
+        </div>
+        <div class="header-controls">
+            <div class="notifications-icon">
+                <span class="bell-icon">🔔</span>
+                <span class="notification-badge">3</span>
+            </div>
+        </div>
+    </div>
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <span class="notification-title">Notifications</span>
+            <span style="font-size: 12px; color: #0078d4; cursor: pointer;">Mark all read</span>
+        </div>
+        <div class="notification-list">
+            <div class="notification-item unread">
+                <div class="notification-item-header">
+                    <div class="notification-item-title">
+                        <span class="notification-type-icon">⚠</span>
+                        Lockbox Approval Pending
+                    </div>
+                    <div class="notification-item-time">10m ago</div>
+                </div>
+                <div class="notification-item-body">
+                    PUBLIC/General deployment requires lockbox approval. Approval expires in 45 minutes.
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <div class="notification-item-header">
+                    <div class="notification-item-title">
+                        <span class="notification-type-icon">🚨</span>
+                        Deployment Stuck
+                    </div>
+                    <div class="notification-item-time">1h ago</div>
+                </div>
+                <div class="notification-item-body">
+                    USNAT/General deployment has been in progress for 4+ hours. Consider investigating.
+                </div>
+            </div>
+            <div class="notification-item unread">
+                <div class="notification-item-header">
+                    <div class="notification-item-title">
+                        <span class="notification-type-icon">❌</span>
+                        Deployment Failed
+                    </div>
+                    <div class="notification-item-time">2h ago</div>
+                </div>
+                <div class="notification-item-body">
+                    Build 1.5.2718 failed on PUBLIC/General at 68.4% completion. LKG 1.5.2714 available for rollback.
+                </div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-item-header">
+                    <div class="notification-item-title">
+                        <span class="notification-type-icon">✓</span>
+                        Deployment Succeeded
+                    </div>
+                    <div class="notification-item-time">5h ago</div>
+                </div>
+                <div class="notification-item-body">
+                    Build <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="build-link" target="_blank">1.5.2726</a> (03/24/2026, 10:34 AM) successfully deployed to PUBLIC/SDF.
+                </div>
+            </div>
+            <div class="notification-item">
+                <div class="notification-item-header">
+                    <div class="notification-item-title">
+                        <span class="notification-type-icon">📋</span>
+                        Policy Update
+                    </div>
+                    <div class="notification-item-time">1d ago</div>
+                </div>
+                <div class="notification-item-body">
+                    SDP policy updated: Minimum soak time increased from 2h to 4h for production rings.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Poison Request Modal -->
+    <div class="poison-modal-overlay" id="poisonModalOverlay">
+        <div class="poison-modal">
+            <div class="poison-modal-header">
+                <h2 class="poison-modal-title">Create Poison Request</h2>
+                <div class="poison-modal-actions">
+                    <button class="poison-btn-secondary">
+                        <span>🕐</span>
+                        <span>History</span>
+                    </button>
+                    <button class="poison-btn-primary-outline">
+                        <span>🔓</span>
+                        <span>Unpoison</span>
+                    </button>
+                </div>
+            </div>
+            <div class="poison-modal-body">
+                <div class="poison-section">
+                    <div class="poison-section-title">Scope</div>
+
+                    <div class="poison-form-group">
+                        <label class="poison-form-label">
+                            Service Tree ID
+                            <span class="required">*</span>
+                        </label>
+                        <input type="text" class="poison-form-input" id="poisonServiceTreeId" placeholder="SVC-12345" value="SVC-12345">
+                    </div>
+
+                    <div class="poison-form-group">
+                        <label class="poison-form-label">Trainset ID</label>
+                        <input type="text" class="poison-form-input" id="poisonTrainsetId" placeholder="TRAIN-001">
+                        <div class="poison-form-help">
+                            The trainset represents microservices within a service. Not providing a trainset means the poisoning action would be scoped for all release pipelines of the service.
+                        </div>
+                    </div>
+
+                    <div class="poison-form-group">
+                        <label class="poison-form-label">
+                            Build Pipeline
+                            <span class="required">*</span>
+                        </label>
+                        <select class="poison-form-select" id="poisonBuildPipeline">
+                            <option value="">Select a build pipeline</option>
+                            <option value="scc-main" selected>SCC - cosmic-release Pipeline</option>
+                            <option value="scc-release">SCC - Release Pipeline</option>
+                            <option value="scc-hotfix">SCC - Hotfix Pipeline</option>
+                            <option value="teams-main">Teams - cosmic-release Pipeline</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="poison-section">
+                    <div class="poison-form-group">
+                        <label class="poison-form-label">
+                            Poison Type
+                            <span class="required">*</span>
+                        </label>
+                        <div class="poison-radio-group">
+                            <div class="poison-radio-option">
+                                <input type="radio" id="poisonTypeSingle" name="poisonType" value="single" checked>
+                                <label for="poisonTypeSingle">Single Build</label>
+                            </div>
+                            <div class="poison-radio-option">
+                                <input type="radio" id="poisonTypeRange" name="poisonType" value="range">
+                                <label for="poisonTypeRange">Build Range</label>
+                            </div>
+                            <div class="poison-radio-option">
+                                <input type="radio" id="poisonTypeContinuous" name="poisonType" value="continuous">
+                                <label for="poisonTypeContinuous">Continuous</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="poison-section">
+                    <div class="poison-section-title">Build Version</div>
+
+                    <div class="poison-form-group">
+                        <label class="poison-form-label">
+                            Build Version
+                            <span class="required">*</span>
+                        </label>
+                        <select class="poison-form-select" id="poisonBuildVersion">
+                            <option value="">Select or type to search build version</option>
+                            <option value="1.5.2726">1.5.2726 (03/24/2026)</option>
+                            <option value="1.5.2724">1.5.2724 (03/24/2026)</option>
+                            <option value="1.5.2722">1.5.2722 (03/23/2026)</option>
+                            <option value="1.5.2720">1.5.2720 (03/23/2026)</option>
+                            <option value="1.5.2718">1.5.2718 (03/22/2026)</option>
+                            <option value="1.5.2714">1.5.2714 (03/21/2026)</option>
+                            <option value="1.5.2704">1.5.2704 (03/20/2026)</option>
+                            <option value="1.5.2700">1.5.2700 (03/19/2026)</option>
+                        </select>
+                    </div>
+
+                    <div class="poison-form-group">
+                        <label class="poison-form-label">
+                            Reason
+                            <span class="required">*</span>
+                        </label>
+                        <textarea class="poison-form-textarea" id="poisonReason" placeholder="Describe why this build is being poisoned" maxlength="250"></textarea>
+                        <div class="poison-char-count">
+                            <span id="poisonReasonCount">0</span>/250 characters
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="poison-modal-footer">
+                <button class="poison-btn-cancel" onclick="closePoisonModal()">Cancel</button>
+                <button class="poison-btn-submit" onclick="submitPoisonRequest()">
+                    <span>🛡</span>
+                    <span>Submit</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="content">
+            <div class="clouds-container">
+                <!-- PUBLIC Cloud -->
+                <div class="cloud-card public">
+                    <div class="cloud-header public">PUBLIC</div>
+                    <div class="rings-list">
+                        <!-- SDF Ring -->
+                        <div class="ring-item">
+                            <div class="ring-header">
+                                <div class="ring-title">
+                                    <span class="ring-name">SDF</span>
+                                    <div class="lkg-badge">
+                                        <span class="lkg-badge-icon">✓</span>
+                                        <span class="lkg-badge-text">LKG:</span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2704" class="lkg-badge-version-link" target="_blank" title="03/20/2026, 09:51 AM">1.5.2704</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deployment-info">
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge pink"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="version-number-link" target="_blank">1.5.2726</a>
+                                    </div>
+                                    <span class="version-timestamp">03/24/2026, 10:34 AM</span>
+                                </div>
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge cyan"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2704" class="version-number-link" target="_blank">1.5.2704</a>
+                                    </div>
+                                    <span class="version-timestamp">03/20/2026, 09:51 AM</span>
+                                </div>
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge purple"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2700" class="version-number-link" target="_blank">1.5.2700</a>
+                                    </div>
+                                    <span class="version-timestamp">03/19/2026, 01:27 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- MSIT Ring -->
+                        <div class="ring-item">
+                            <div class="ring-header">
+                                <div class="ring-title">
+                                    <span class="ring-name">MSIT</span>
+                                    <div class="lkg-badge">
+                                        <span class="lkg-badge-icon">✓</span>
+                                        <span class="lkg-badge-text">LKG:</span>
+                                        <span class="lkg-badge-version">1.5.2718</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deployment-info">
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge yellow"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2722" class="version-number-link" target="_blank">1.5.2722</a>
+                                    </div>
+                                    <span class="version-timestamp">03/23/2026, 03:45 PM</span>
+                                </div>
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge orange"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="version-number-link" target="_blank">1.5.2720</a>
+                                    </div>
+                                    <span class="version-timestamp">03/23/2026, 11:22 AM</span>
+                                </div>
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge cyan"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="version-number-link" target="_blank">1.5.2718</a>
+                                    </div>
+                                    <span class="version-timestamp">03/22/2026, 02:15 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- General Ring -->
+                        <div class="ring-item">
+                            <div class="ring-header">
+                                <div class="ring-title">
+                                    <span class="ring-name">General</span>
+                                    <div class="lkg-badge">
+                                        <span class="lkg-badge-icon">✓</span>
+                                        <span class="lkg-badge-text">LKG:</span>
+                                        <span class="lkg-badge-version">1.5.2714</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deployment-info">
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge orange"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="version-number-link" target="_blank">1.5.2718</a>
+                                    </div>
+                                    <span class="version-timestamp">03/22/2026, 02:15 PM</span>
+                                </div>
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge cyan"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="version-number-link" target="_blank">1.5.2714</a>
+                                    </div>
+                                    <span class="version-timestamp">03/21/2026, 04:38 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- GAL Cloud -->
+                <div class="cloud-card gal">
+                    <div class="cloud-header gal">GAL</div>
+                    <div class="rings-list">
+                        <div class="ring-item">
+                            <div class="ring-header">
+                                <div class="ring-title">
+                                    <span class="ring-name">General</span>
+                                    <div class="lkg-badge">
+                                        <span class="lkg-badge-icon">✓</span>
+                                        <span class="lkg-badge-text">LKG:</span>
+                                        <span class="lkg-badge-version">1.5.2714</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deployment-info">
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge cyan"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="version-number-link" target="_blank">1.5.2714</a>
+                                    </div>
+                                    <span class="version-timestamp">03/21/2026, 04:38 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- GCCH Cloud -->
+                <div class="cloud-card gcch">
+                    <div class="cloud-header gcch">GCCH</div>
+                    <div class="rings-list">
+                        <div class="ring-item">
+                            <div class="ring-header">
+                                <div class="ring-title">
+                                    <span class="ring-name">General</span>
+                                    <div class="lkg-badge">
+                                        <span class="lkg-badge-icon">✓</span>
+                                        <span class="lkg-badge-text">LKG:</span>
+                                        <span class="lkg-badge-version">1.5.2714</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deployment-info">
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge cyan"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="version-number-link" target="_blank">1.5.2714</a>
+                                    </div>
+                                    <span class="version-timestamp">03/21/2026, 04:38 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- DOD Cloud -->
+                <div class="cloud-card dod">
+                    <div class="cloud-header dod">DOD</div>
+                    <div class="rings-list">
+                        <div class="ring-item">
+                            <div class="ring-header">
+                                <div class="ring-title">
+                                    <span class="ring-name">General</span>
+                                    <div class="lkg-badge">
+                                        <span class="lkg-badge-icon">✓</span>
+                                        <span class="lkg-badge-text">LKG:</span>
+                                        <span class="lkg-badge-version">1.5.2714</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deployment-info">
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge cyan"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="version-number-link" target="_blank">1.5.2714</a>
+                                    </div>
+                                    <span class="version-timestamp">03/21/2026, 04:38 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- USNAT Cloud -->
+                <div class="cloud-card usnat">
+                    <div class="cloud-header usnat">USNAT</div>
+                    <div class="rings-list">
+                        <div class="ring-item">
+                            <div class="ring-header">
+                                <div class="ring-title">
+                                    <span class="ring-name">General</span>
+                                    <div class="lkg-badge">
+                                        <span class="lkg-badge-icon">✓</span>
+                                        <span class="lkg-badge-text">LKG:</span>
+                                        <span class="lkg-badge-version">1.5.2714</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="deployment-info">
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge cyan"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="version-number-link" target="_blank">1.5.2714</a>
+                                    </div>
+                                    <span class="version-timestamp">03/21/2026, 04:38 PM</span>
+                                </div>
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge orange"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="version-number-link" target="_blank">1.5.2718</a>
+                                    </div>
+                                    <span class="version-timestamp">03/22/2026, 02:15 PM</span>
+                                </div>
+                                <div class="version-row">
+                                    <div class="version-row-header">
+                                        <span class="version-badge blue"></span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="version-number-link" target="_blank">1.5.2720</a>
+                                    </div>
+                                    <span class="version-timestamp">03/23/2026, 11:22 AM</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Deployment Actions History View -->
+            <div class="deployment-actions-container" style="display: none; width: 90%; max-width: 1400px;">
+                <div class="deployment-actions-header">
+                    <div style="margin-bottom: 24px;">
+                        <h2 style="margin-bottom: 12px;">Build Poisoning</h2>
+                        <p style="margin-bottom: 8px; color: #605e5c; line-height: 1.5;">
+                            Build poisoning allows you to block specific builds from being deployed to any environment. Use this to prevent deployment of builds with critical bugs, security vulnerabilities, or failed tests. Poisoned builds are automatically blocked across all deployment pipelines until explicitly unpoisoned.
+                        </p>
+                        <p style="margin: 0;">
+                            <a href="https://docs.microsoft.com/azure-devops/build-poisoning" target="_blank" class="doc-link" style="color: #0078d4; text-decoration: none; font-size: 13px; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>📖</span>
+                                <span style="text-decoration: underline;">Learn more about build poisoning</span>
+                                <span style="font-size: 11px;">↗</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Current State Section -->
+                <div id="current-state-section" style="margin-bottom: 48px;">
+                    <div class="poisoned-builds-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div>
+                            <h3 style="margin-bottom: 4px;">Currently Poisoned Builds</h3>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span class="poisoned-count-badge">2 Active</span>
+                                <span style="font-size: 12px; color: #8a8886;">• Last 3 months</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="action-btn danger" onclick="openPoisonModal()" style="padding: 8px 16px; font-size: 14px; font-weight: 600;">
+                                <span style="margin-right: 6px;">☠</span>
+                                Poison Build
+                            </button>
+                            <button class="action-btn primary" onclick="openUnpoisonModal()" style="padding: 8px 16px; font-size: 14px; font-weight: 600;">
+                                <span style="margin-right: 6px;">🔓</span>
+                                Unpoison Build
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="builds-list">
+                        <div class="build-list-item poisoned">
+                            <div class="build-info-section">
+                                <div class="build-number-large">
+                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="build-number-link" target="_blank">Build 1.5.2726</a>
+                                </div>
+                                <div class="build-meta-info">
+                                    <span class="build-meta-item">🕐 Poisoned on 03/25/2026, 02:45 PM</span>
+                                    <span class="build-meta-item">👤 By Jane Doe</span>
+                                </div>
+                                <div class="poison-reason">
+                                    <span class="poison-reason-label">Reason:</span> Critical security vulnerability CVE-2026-1234 detected in authentication module
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="build-list-item poisoned">
+                            <div class="build-info-section">
+                                <div class="build-number-large">
+                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="build-number-link" target="_blank">Build 1.5.2718</a>
+                                </div>
+                                <div class="build-meta-info">
+                                    <span class="build-meta-item">🕐 Poisoned on 03/23/2026, 06:32 PM</span>
+                                    <span class="build-meta-item">👤 By Jane Doe</span>
+                                </div>
+                                <div class="poison-reason">
+                                    <span class="poison-reason-label">Reason:</span> Failed integration tests in MSIT environment - blocking deployment progression
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Section -->
+                <div id="history-section" style="margin-bottom: 32px;">
+                    <div class="actions-history-header">
+                        <div>
+                            <h3>Poisoning/Unpoisoning History</h3>
+                            <p style="font-size: 13px; color: #666; margin-bottom: 0;">Complete audit trail of all poisoning and unpoisoning actions</p>
+                        </div>
+                        <div class="actions-filters">
+                            <select class="filter-dropdown" id="actionTypeFilter" onchange="filterActions()">
+                                <option value="">All Actions</option>
+                                <option value="POISON">Poison Only</option>
+                                <option value="UNPOISON">Unpoison Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="deployment-actions-wrapper">
+                        <table class="deployment-actions-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" onclick="sortTable(0)">Timestamp <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(1)">Action Type <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(2)">Service Tree ID <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(3)">Build Pipeline <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(4)">Build Version <span class="sort-indicator">⇅</span></th>
+                                    <th>Reason</th>
+                                    <th class="sortable" onclick="sortTable(6)">User <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(7)">Status <span class="sort-indicator">⇅</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="deployment-actions-tbody">
+                                <tr>
+                                    <td data-sort="20260325144500">03/25/2026, 02:45 PM</td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="build-link" target="_blank">1.5.2726</a></td>
+                                    <td>Critical security vulnerability CVE-2026-1234 detected in authentication module</td>
+                                    <td>Jane Doe</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260324161500">03/24/2026, 04:15 PM</td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="build-link" target="_blank">1.5.2720</a></td>
+                                    <td>Issue resolved - unpoisoned after verification of hotfix deployment</td>
+                                    <td>Jane Doe</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260323183200">03/23/2026, 06:32 PM</td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="build-link" target="_blank">1.5.2718</a></td>
+                                    <td>Failed integration tests in MSIT environment - blocking deployment progression</td>
+                                    <td>Jane Doe</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260322095000">03/22/2026, 09:50 AM</td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td>Tests passing - safe to proceed with deployment</td>
+                                    <td>John Smith</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260321142000">03/21/2026, 02:20 PM</td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td>Memory leak detected during load testing</td>
+                                    <td>Sarah Johnson</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Poison Build Modal -->
+                <div class="poison-modal-overlay" id="poisonFormModal">
+                    <div class="poison-modal">
+                        <div class="poison-modal-header">
+                            <h2>☠ Poison Build</h2>
+                            <button class="close-btn" onclick="closePoisonModal()">×</button>
+                        </div>
+                        <div class="poison-modal-body">
+                <!-- Tab Content 2: Poison Build Form -->
+                <div id="tab-poison-form" class="poison-tab-content">
+                    <div class="poison-section">
+                        <div class="poison-section-title">Scope</div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Service Tree ID
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" class="poison-form-input" id="poisonServiceTreeIdTab" placeholder="SVC-12345" value="SVC-12345">
+                        </div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">Trainset ID</label>
+                            <input type="text" class="poison-form-input" id="poisonTrainsetIdTab" placeholder="TRAIN-001">
+                            <div class="poison-form-help">
+                                The trainset represents microservices within a service. Not providing a trainset means the poisoning action would be scoped for all release pipelines of the service.
+                            </div>
+                        </div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Build Pipeline
+                                <span class="required">*</span>
+                            </label>
+                            <select class="poison-form-select" id="poisonBuildPipelineTab">
+                                <option value="">Select a build pipeline</option>
+                                <option value="scc-main" selected>SCC - cosmic-release Pipeline</option>
+                                <option value="scc-release">SCC - Release Pipeline</option>
+                                <option value="scc-hotfix">SCC - Hotfix Pipeline</option>
+                                <option value="teams-main">Teams - cosmic-release Pipeline</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="poison-section">
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Poison Type
+                                <span class="required">*</span>
+                            </label>
+                            <div class="poison-radio-group">
+                                <div class="poison-radio-option">
+                                    <input type="radio" id="poisonTypeSingleTab" name="poisonTypeTab" value="single" checked>
+                                    <label for="poisonTypeSingleTab">Single Build</label>
+                                </div>
+                                <div class="poison-radio-option">
+                                    <input type="radio" id="poisonTypeRangeTab" name="poisonTypeTab" value="range">
+                                    <label for="poisonTypeRangeTab">Build Range</label>
+                                </div>
+                                <div class="poison-radio-option">
+                                    <input type="radio" id="poisonTypeContinuousTab" name="poisonTypeTab" value="continuous">
+                                    <label for="poisonTypeContinuousTab">Continuous</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="poison-section">
+                        <div class="poison-section-title">Build Version</div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Build Version
+                                <span class="required">*</span>
+                            </label>
+                            <select class="poison-form-select" id="poisonBuildVersionTab">
+                                <option value="">Select or type to search build version</option>
+                                <option value="1.5.2726">1.5.2726 (03/24/2026)</option>
+                                <option value="1.5.2724">1.5.2724 (03/24/2026)</option>
+                                <option value="1.5.2722">1.5.2722 (03/23/2026)</option>
+                                <option value="1.5.2720">1.5.2720 (03/23/2026)</option>
+                                <option value="1.5.2718">1.5.2718 (03/22/2026)</option>
+                                <option value="1.5.2714">1.5.2714 (03/21/2026)</option>
+                                <option value="1.5.2704">1.5.2704 (03/20/2026)</option>
+                                <option value="1.5.2700">1.5.2700 (03/19/2026)</option>
+                            </select>
+                        </div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Reason
+                                <span class="required">*</span>
+                            </label>
+                            <textarea class="poison-form-textarea" id="poisonReasonTab" placeholder="Describe why this build is being poisoned" maxlength="250"></textarea>
+                            <div class="poison-char-count">
+                                <span id="poisonReasonCountTab">0</span>/250 characters
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="action-btn" onclick="closePoisonModal()">Cancel</button>
+                        <button class="action-btn danger" onclick="submitPoisonRequestTab()">☠ Poison Build</button>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unpoison Build Modal -->
+                <div class="poison-modal-overlay" id="unpoisonFormModal">
+                    <div class="poison-modal">
+                        <div class="poison-modal-header">
+                            <h2>🔓 Unpoison Build</h2>
+                            <button class="close-btn" onclick="closeUnpoisonModal()">×</button>
+                        </div>
+                        <div class="poison-modal-body">
+                    <div class="poison-section">
+                        <div class="poison-section-title">Scope</div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Service Tree ID
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" class="poison-form-input" id="unpoisonServiceTreeIdTab" placeholder="SVC-12345" value="SVC-12345">
+                        </div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">Trainset ID</label>
+                            <input type="text" class="poison-form-input" id="unpoisonTrainsetIdTab" placeholder="TRAIN-001">
+                            <div class="poison-form-help">
+                                The trainset represents microservices within a service. Not providing a trainset means the unpoisoning action would be scoped for all release pipelines of the service.
+                            </div>
+                        </div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Build Pipeline
+                                <span class="required">*</span>
+                            </label>
+                            <select class="poison-form-select" id="unpoisonBuildPipelineTab">
+                                <option value="">Select a build pipeline</option>
+                                <option value="scc-main" selected>SCC - cosmic-release Pipeline</option>
+                                <option value="scc-release">SCC - Release Pipeline</option>
+                                <option value="scc-hotfix">SCC - Hotfix Pipeline</option>
+                                <option value="teams-main">Teams - cosmic-release Pipeline</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="poison-section">
+                        <div class="poison-section-title">Build Version</div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Currently Poisoned Build Version
+                                <span class="required">*</span>
+                            </label>
+                            <select class="poison-form-select" id="unpoisonBuildVersionTab">
+                                <option value="">Select poisoned build to unpoison</option>
+                                <option value="1.5.2726">1.5.2726 (Poisoned on 03/25/2026)</option>
+                                <option value="1.5.2718">1.5.2718 (Poisoned on 03/23/2026)</option>
+                            </select>
+                        </div>
+
+                        <div class="poison-form-group">
+                            <label class="poison-form-label">
+                                Reason
+                                <span class="required">*</span>
+                            </label>
+                            <textarea class="poison-form-textarea" id="unpoisonReasonTab" placeholder="Describe why this build is being unpoisoned" maxlength="250"></textarea>
+                            <div class="poison-char-count">
+                                <span id="unpoisonReasonCountTab">0</span>/250 characters
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="action-btn" onclick="closeUnpoisonModal()">Cancel</button>
+                        <button class="action-btn primary" onclick="submitUnpoisonRequestTab()">🔓 Unpoison Build</button>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Old Tab Content 4: Poisoning/Unpoisoning History (TO BE REMOVED) -->
+                <div id="tab-history-old" style="display: none;" class="poison-tab-content">
+                    <div class="actions-history-header">
+                        <div>
+                            <h3>Poisoning/Unpoisoning History</h3>
+                            <p style="font-size: 13px; color: #666; margin-bottom: 0;">Complete audit trail of all poisoning and unpoisoning actions</p>
+                        </div>
+                        <div class="actions-filters">
+                            <select class="filter-dropdown" id="actionTypeFilter" onchange="filterActions()">
+                                <option value="">All Actions</option>
+                                <option value="POISON">Poison Only</option>
+                                <option value="UNPOISON">Unpoison Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="deployment-actions-wrapper">
+                        <table class="deployment-actions-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" onclick="sortTable(0)">Timestamp <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(1)">Action Type <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(2)">Service Tree ID <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(3)">Build Pipeline <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(4)">Build Version <span class="sort-indicator">⇅</span></th>
+                                    <th>Reason</th>
+                                    <th class="sortable" onclick="sortTable(6)">User <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(7)">Status <span class="sort-indicator">⇅</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="deployment-actions-tbody">
+                                <tr>
+                                    <td data-sort="20260325144500">03/25/2026, 02:45 PM</td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="build-link" target="_blank">1.5.2726</a></td>
+                                    <td>Critical security vulnerability CVE-2026-1234 detected in authentication module</td>
+                                    <td>Jane Doe</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260324161500">03/24/2026, 04:15 PM</td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="build-link" target="_blank">1.5.2720</a></td>
+                                    <td>Issue resolved - unpoisoned after verification of hotfix deployment</td>
+                                    <td>Jane Doe</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260323183200">03/23/2026, 06:32 PM</td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="build-link" target="_blank">1.5.2718</a></td>
+                                    <td>Failed integration tests in MSIT environment - blocking deployment progression</td>
+                                    <td>Jane Doe</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260322095000">03/22/2026, 09:50 AM</td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td>Tests passing - safe to proceed with deployment</td>
+                                    <td>John Smith</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260321142000">03/21/2026, 02:20 PM</td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SVC-12345</td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td>Memory leak detected during load testing</td>
+                                    <td>Sarah Johnson</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-sort="20260320113000">03/20/2026, 11:30 AM</td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SVC-67890</td>
+                                    <td>Teams - cosmic-release Pipeline</td>
+                                    <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2704" class="build-link" target="_blank">1.5.2704</a></td>
+                                    <td>Incorrect API response format causing client crashes</td>
+                                    <td>Mike Chen</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Build Legend (Fixed Bottom Left) -->
+        </div>
+        <!-- Build Details Modal Popup -->
+        <div class="build-details-overlay" id="buildDetailsPanelOverlay" onclick="closeBuildDetails()"></div>
+        <div class="build-details-panel" id="buildDetailsPanel" onclick="event.stopPropagation()">
+            <div class="build-details-header">
+                <div class="build-details-title-section">
+                    <h2 id="buildDetailsNumber">Build 1.5.2726</h2>
+                    <button class="close-panel-btn" onclick="closeBuildDetails()" title="Close">✕</button>
+                </div>
+                <div class="build-details-info">
+                    <div class="build-info-item">
+                        <span class="info-label">Release Pipeline:</span>
+                        <a href="#" id="buildReleasePipelineLink" class="info-link" target="_blank">View Release Pipeline →</a>
+                    </div>
+                    <div class="build-info-item">
+                        <span class="info-label">When Triggered:</span>
+                        <span class="info-value" id="buildDetailsTriggered">03/25/2026, 02:45 PM</span>
+                    </div>
+                    <div class="build-info-item">
+                        <span class="info-label">Who Deployed:</span>
+                        <span class="info-value" id="buildDetailsDeployer">Jane Doe</span>
+                    </div>
+                </div>
+            </div>
+            <div class="build-details-tabs">
+                <div class="build-tab active">Deployment Stages</div>
+            </div>
+            <div class="build-details-content">
+                <div class="stages-filter-header">
+                    <span class="stages-filter-label">Show active deployments only</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="activeStagesToggle" checked onchange="toggleActiveStages()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="stages-list">
+                    <div class="stage-item" data-stage-status="completed">
+                        <div class="stage-status-icon status-success">✓</div>
+                        <div class="stage-info">
+                            <div class="stage-name">SDF Public - West US</div>
+                            <div class="stage-meta">
+                                <span>3 jobs completed</span>
+                                <span>•</span>
+                                <span>45m 12s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stage-item" data-stage-status="completed">
+                        <div class="stage-status-icon status-success">✓</div>
+                        <div class="stage-info">
+                            <div class="stage-name">MSIT Public - Central US</div>
+                            <div class="stage-meta">
+                                <span>3 jobs completed</span>
+                                <span>•</span>
+                                <span>52m 8s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stage-item" data-stage-status="active">
+                        <div class="stage-status-icon status-success">✓</div>
+                        <div class="stage-info">
+                            <div class="stage-name">WW Public - East US</div>
+                            <div class="stage-meta">
+                                <span>3 jobs completed</span>
+                                <span>•</span>
+                                <span>1h 2m 34s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stage-item" data-stage-status="active">
+                        <div class="stage-status-icon status-success">✓</div>
+                        <div class="stage-info">
+                            <div class="stage-name">WW Public - West US 2</div>
+                            <div class="stage-meta">
+                                <span>3 jobs completed</span>
+                                <span>•</span>
+                                <span>58m 45s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stage-item" data-stage-status="active">
+                        <div class="stage-status-icon status-success">✓</div>
+                        <div class="stage-info">
+                            <div class="stage-name">GCC-M - USGov Virginia</div>
+                            <div class="stage-meta">
+                                <span>3 jobs completed</span>
+                                <span>•</span>
+                                <span>1h 8m 22s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stage-item" data-stage-status="active">
+                        <div class="stage-status-icon status-success">✓</div>
+                        <div class="stage-info">
+                            <div class="stage-name">GCC-H - USGov Texas</div>
+                            <div class="stage-meta">
+                                <span>3 jobs completed</span>
+                                <span>•</span>
+                                <span>1h 5m 16s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stage-item" data-stage-status="active">
+                        <div class="stage-status-icon status-progress">⟳</div>
+                        <div class="stage-info">
+                            <div class="stage-name">DOD - USDoD East</div>
+                            <div class="stage-meta">
+                                <span>2 of 3 jobs completed</span>
+                                <span>•</span>
+                                <span>Running...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Notification panel toggle
+        document.querySelector('.notifications-icon').addEventListener('click', function(e) {
+            e.stopPropagation();
+            const panel = document.getElementById('notificationPanel');
+            panel.classList.toggle('show');
+        });
+        // Close notification panel when clicking outside
+        document.addEventListener('click', function(e) {
+            const panel = document.getElementById('notificationPanel');
+            const notifIcon = document.querySelector('.notifications-icon');
+            if (!panel.contains(e.target) && !notifIcon.contains(e.target)) {
+                panel.classList.remove('show');
+            }
+        });
+        // Health card click handlers
+        document.querySelectorAll('.health-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const label = this.querySelector('.health-label').textContent;
+                console.log('Health card clicked:', label);
+                // Could open detailed view or filter based on card
+            });
+        });
+        document.querySelectorAll('.tab:not(.add-tab)').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const view = this.getAttribute('data-view');
+                // Check if it's an extension tab (coming soon)
+                if (this.classList.contains('extension-tab')) {
+                    const tabName = this.textContent.trim();
+                    alert(`${tabName} is coming soon! This extension will provide additional deployment capabilities.`);
+                    return;
+                }
+                // Handle active tab switching for working tabs
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Handle view switching
+                const cloudsContainer = document.querySelector('.clouds-container');
+                const viewToggle = document.querySelector('.view-toggle');
+                const deploymentActionsContainer = document.querySelector('.deployment-actions-container');
+
+                // Hide all views
+                cloudsContainer.style.display = 'none';
+                viewToggle.style.display = 'none';
+                deploymentActionsContainer.style.display = 'none';
+
+                // Show the appropriate view
+                if (view === 'service-viz') {
+                    cloudsContainer.style.display = 'flex';
+                    viewToggle.style.display = 'flex';
+                } else if (view === 'deployment-actions') {
+                    deploymentActionsContainer.style.display = 'block';
+                }
+            });
+        });
+        // Add tab click handler
+        document.querySelector('.add-tab').addEventListener('click', function() {
+            alert('Add Extension\n\nThis portal is designed to be extensible. Future extensions could include:\n• Custom dashboards\n• Integration with other tools\n• Team-specific views\n• Analytics and reporting');
+        });
+        // Make LKG badges clickable for quick rollback
+        document.querySelectorAll('.lkg-badge').forEach(badge => {
+            badge.style.cursor = 'pointer';
+            badge.addEventListener('click', function(e) {
+                // Don't trigger if clicking on the link itself
+                if (e.target.tagName === 'A') return;
+
+                const versionEl = this.querySelector('.lkg-badge-version, .lkg-badge-version-link');
+                if (versionEl) {
+                    const version = versionEl.textContent;
+                    alert(`Quick action: Rollback to LKG ${version}`);
+                }
+            });
+        });
+        // Function to log deployment actions
+        function logDeploymentAction(actionType, target, details) {
+            const timestamp = new Date().toLocaleString('en-US', {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            });
+            const tbody = document.getElementById('deployment-actions-tbody');
+
+            // Remove empty state if it exists
+            const emptyState = tbody.querySelector('.empty-state');
+            if (emptyState) {
+                emptyState.remove();
+            }
+
+            // Create new row
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${timestamp}</td>
+                <td><span class="action-type-badge ${actionType.toLowerCase()}">${actionType}</span></td>
+                <td>${target}</td>
+                <td>${details}</td>
+                <td>Aashna Jha</td>
+                <td><span class="action-status completed">Completed</span></td>
+            `;
+
+            // Add to top of table
+            tbody.insertBefore(row, tbody.firstChild);
+        }
+
+        // Function to route to deployment actions view
+        function routeToDeploymentActions() {
+            const deploymentsTab = document.querySelector('.tab[data-view="deployment-actions"]');
+            if (deploymentsTab) {
+                deploymentsTab.click();
+            }
+        }
+
+        // Global action functions
+        function globalRollback() {
+            const target = prompt(`🔄 Rollback Deployment\n\nEnter target (e.g., "PUBLIC/General" or "GCCH" for entire cloud):`);
+            if (target && target.trim()) {
+                const parts = target.trim().split('/');
+                const isCloudWide = parts.length === 1;
+                if (isCloudWide) {
+                    // Cloud-wide rollback
+                    const cloudName = parts[0].toUpperCase();
+                    const confirmed = confirm(`🔄 Cloud-Wide Rollback\n\n` +
+                        `Target: ${cloudName} Cloud (All Rings)\n\n` +
+                        `This will rollback ALL rings in the ${cloudName} cloud to their respective LKG versions.\n\n` +
+                        `This is a critical operation that affects the entire cloud.\n\n` +
+                        `Continue?`);
+                    if (confirmed) {
+                        const doubleCheck = confirm(`⚠️ Final Confirmation Required\n\n` +
+                            `You are about to rollback the entire ${cloudName} cloud.\n\n` +
+                            `This action cannot be undone.\n\n` +
+                            `Are you absolutely sure?`);
+                        if (doubleCheck) {
+                            alert(`⏪ Cloud Rollback Initiated!\n\n` +
+                                `${cloudName} Cloud → Rolling back all rings to LKG\n\n` +
+                                `You will receive notifications as the rollback progresses.\n` +
+                                `Estimated time: ~45-60 minutes\n` +
+                                `Oncall engineers and leadership have been notified.`);
+
+                            // Log the action
+                            logDeploymentAction('ROLLBACK', `${cloudName} Cloud (All Rings)`, 'Cloud-wide rollback to LKG versions');
+                            // Route to deployment actions view
+                            routeToDeploymentActions();
+                        }
+                    }
+                } else {
+                    // Ring-specific rollback
+                    const cloudName = parts[0].toUpperCase();
+                    const ringName = parts[1];
+                    const lkgVersion = prompt(`Enter LKG version to rollback to (or leave empty to use current LKG):`);
+                    const confirmed = confirm(`🔄 Quick Rollback\n\n` +
+                        `Target: ${cloudName} / ${ringName}\n` +
+                        `Rollback to: ${lkgVersion || 'Current LKG'}\n\n` +
+                        `This will immediately initiate the rollback process.\n\n` +
+                        `Continue?`);
+                    if (confirmed) {
+                        alert(`⏪ Rollback Initiated!\n\n` +
+                            `${cloudName} / ${ringName} → ${lkgVersion || 'LKG'}\n\n` +
+                            `You will receive notifications as the rollback progresses.\n` +
+                            `Estimated time: ~25 minutes`);
+
+                        // Log the action
+                        const versionText = lkgVersion ? `to version ${lkgVersion}` : 'to LKG';
+                        logDeploymentAction('ROLLBACK', `${cloudName} / ${ringName}`, `Rollback ${versionText}`);
+                        // Route to deployment actions view
+                        routeToDeploymentActions();
+                    }
+                }
+            }
+        }
+        function globalPoison() {
+            // Open the poison request modal
+            document.getElementById('poisonModalOverlay').classList.add('show');
+        }
+
+        function closePoisonModal() {
+            document.getElementById('poisonModalOverlay').classList.remove('show');
+            // Reset form
+            document.getElementById('poisonServiceTreeId').value = 'SVC-12345';
+            document.getElementById('poisonTrainsetId').value = '';
+            document.getElementById('poisonBuildPipeline').selectedIndex = 1;
+            document.getElementById('poisonTypeSingle').checked = true;
+            document.getElementById('poisonBuildVersion').selectedIndex = 0;
+            document.getElementById('poisonReason').value = '';
+            document.getElementById('poisonReasonCount').textContent = '0';
+        }
+
+        function submitPoisonRequest() {
+            const serviceTreeId = document.getElementById('poisonServiceTreeId').value.trim();
+            const trainsetId = document.getElementById('poisonTrainsetId').value.trim();
+            const buildPipeline = document.getElementById('poisonBuildPipeline').value;
+            const poisonType = document.querySelector('input[name="poisonType"]:checked').value;
+            const buildVersion = document.getElementById('poisonBuildVersion').value;
+            const reason = document.getElementById('poisonReason').value.trim();
+
+            // Validation
+            if (!serviceTreeId) {
+                alert('❌ Service Tree ID is required');
+                return;
+            }
+            if (!buildPipeline) {
+                alert('❌ Build Pipeline is required');
+                return;
+            }
+            if (!buildVersion) {
+                alert('❌ Build Version is required');
+                return;
+            }
+            if (!reason) {
+                alert('❌ Reason is required');
+                return;
+            }
+
+            // Build scope text
+            const scopeText = trainsetId
+                ? `${serviceTreeId} / ${trainsetId}`
+                : serviceTreeId;
+
+            // Success message
+            alert(`☠ Build Poison Request Submitted!\n\n` +
+                `Build: ${buildVersion}\n` +
+                `Scope: ${scopeText}\n` +
+                `Pipeline: ${buildPipeline}\n` +
+                `Type: ${poisonType}\n` +
+                `Reason: ${reason}\n\n` +
+                `The build will be blocked within 5 minutes.\n` +
+                `Oncall engineers and administrators have been notified.`);
+
+            // Log the action
+            logDeploymentAction('POISON', scopeText, `Build ${buildVersion} poisoned (${poisonType}). Reason: ${reason}`);
+
+            // Close modal
+            closePoisonModal();
+
+            // Route to deployment actions view
+            routeToDeploymentActions();
+        }
+
+        function submitUnpoisonRequest() {
+            // This is a simplified version - you would need to add proper form IDs in the unpoison form
+            alert('🔓 Unpoison Request Submitted!\n\n' +
+                'The build poison flag will be removed within 5 minutes.\n' +
+                'Deployment can proceed normally after unpoisoning is complete.');
+
+            // Here you would add actual form validation and submission logic similar to submitPoisonRequest
+            // For now, just showing a confirmation message
+        }
+
+        // Tab Switching for Poisoning Page
+        // Modal functions for poison/unpoison
+        function openPoisonModal() {
+            document.getElementById('poisonFormModal').classList.add('show');
+        }
+
+        function closePoisonModal() {
+            document.getElementById('poisonFormModal').classList.remove('show');
+        }
+
+        function openUnpoisonModal() {
+            document.getElementById('unpoisonFormModal').classList.add('show');
+        }
+
+        function closeUnpoisonModal() {
+            document.getElementById('unpoisonFormModal').classList.remove('show');
+        }
+
+        // Close modals when clicking outside
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('poison-modal-overlay')) {
+                e.target.classList.remove('show');
+            }
+        });
+
+        // Submit functions for tab forms
+        function submitPoisonRequestTab() {
+            const serviceTreeId = document.getElementById('poisonServiceTreeIdTab').value.trim();
+            const trainsetId = document.getElementById('poisonTrainsetIdTab').value.trim();
+            const buildPipeline = document.getElementById('poisonBuildPipelineTab').value;
+            const poisonType = document.querySelector('input[name="poisonTypeTab"]:checked').value;
+            const buildVersion = document.getElementById('poisonBuildVersionTab').value;
+            const reason = document.getElementById('poisonReasonTab').value.trim();
+
+            // Validation
+            if (!serviceTreeId) {
+                alert('❌ Service Tree ID is required');
+                return;
+            }
+            if (!buildPipeline) {
+                alert('❌ Build Pipeline is required');
+                return;
+            }
+            if (!buildVersion) {
+                alert('❌ Build Version is required');
+                return;
+            }
+            if (!reason) {
+                alert('❌ Reason is required');
+                return;
+            }
+
+            // Build scope text
+            const scopeText = trainsetId
+                ? `${serviceTreeId} / ${trainsetId}`
+                : serviceTreeId;
+
+            // Success message
+            alert(`☠ Build Poison Request Submitted!\n\n` +
+                `Build: ${buildVersion}\n` +
+                `Scope: ${scopeText}\n` +
+                `Pipeline: ${buildPipeline}\n` +
+                `Type: ${poisonType}\n` +
+                `Reason: ${reason}\n\n` +
+                `The build will be blocked within 5 minutes.\n` +
+                `Oncall engineers and administrators have been notified.`);
+
+            // Reset form and close modal
+            document.getElementById('poisonReasonTab').value = '';
+            document.getElementById('poisonReasonCountTab').textContent = '0';
+            closePoisonModal();
+        }
+
+        function submitUnpoisonRequestTab() {
+            const serviceTreeId = document.getElementById('unpoisonServiceTreeIdTab').value.trim();
+            const trainsetId = document.getElementById('unpoisonTrainsetIdTab').value.trim();
+            const buildPipeline = document.getElementById('unpoisonBuildPipelineTab').value;
+            const buildVersion = document.getElementById('unpoisonBuildVersionTab').value;
+            const reason = document.getElementById('unpoisonReasonTab').value.trim();
+
+            // Validation
+            if (!serviceTreeId) {
+                alert('❌ Service Tree ID is required');
+                return;
+            }
+            if (!buildPipeline) {
+                alert('❌ Build Pipeline is required');
+                return;
+            }
+            if (!buildVersion) {
+                alert('❌ Build Version is required');
+                return;
+            }
+            if (!reason) {
+                alert('❌ Reason is required');
+                return;
+            }
+
+            // Build scope text
+            const scopeText = trainsetId
+                ? `${serviceTreeId} / ${trainsetId}`
+                : serviceTreeId;
+
+            // Success message
+            alert(`🔓 Unpoison Request Submitted!\n\n` +
+                `Build: ${buildVersion}\n` +
+                `Scope: ${scopeText}\n` +
+                `Pipeline: ${buildPipeline}\n` +
+                `Reason: ${reason}\n\n` +
+                `The build poison flag will be removed within 5 minutes.\n` +
+                `Deployment can proceed normally after unpoisoning is complete.`);
+
+            // Reset form and close modal
+            document.getElementById('unpoisonReasonTab').value = '';
+            document.getElementById('unpoisonReasonCountTab').textContent = '0';
+            closeUnpoisonModal();
+        }
+
+        // Character counters for tab textareas
+        document.addEventListener('DOMContentLoaded', function() {
+            const poisonReasonTab = document.getElementById('poisonReasonTab');
+            const unpoisonReasonTab = document.getElementById('unpoisonReasonTab');
+
+            if (poisonReasonTab) {
+                poisonReasonTab.addEventListener('input', function() {
+                    document.getElementById('poisonReasonCountTab').textContent = this.value.length;
+                });
+            }
+
+            if (unpoisonReasonTab) {
+                unpoisonReasonTab.addEventListener('input', function() {
+                    document.getElementById('unpoisonReasonCountTab').textContent = this.value.length;
+                });
+            }
+        });
+
+        // Character counter for reason textarea
+        document.addEventListener('DOMContentLoaded', function() {
+            const reasonTextarea = document.getElementById('poisonReason');
+            if (reasonTextarea) {
+                reasonTextarea.addEventListener('input', function() {
+                    const count = this.value.length;
+                    document.getElementById('poisonReasonCount').textContent = count;
+                });
+            }
+
+            // Close modal when clicking outside
+            document.getElementById('poisonModalOverlay').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePoisonModal();
+                }
+            });
+
+            // Add click handlers to all build links
+            const buildLinks = document.querySelectorAll('.build-number-link, .build-link, .version-number-link, .legend-build, .lkg-badge-version-link');
+            console.log('Found build links:', buildLinks.length);
+            buildLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const buildNumber = this.textContent.trim();
+                    const buildId = this.href.match(/buildId=(\d+)/)?.[1] || 'N/A';
+                    console.log('Clicked build:', buildNumber, buildId);
+                    showBuildDetails(buildNumber, buildId);
+                });
+            });
+        });
+        function globalBreakglass() {
+            const target = prompt(`🚨 Breakglass Emergency Override\n\n⚠️ WARNING: This bypasses all safety policies\n\nEnter target (e.g., "PUBLIC/General" or "GCCH"):`);
+            if (target && target.trim()) {
+                const action = prompt(`🚨 Breakglass for ${target}\n\nSpecify action:\n- "deploy [version]" to force deploy\n- "skip-gates" to bypass all gates\n- "emergency-rollback" for immediate rollback\n\nEnter action:`);
+                if (action && action.trim()) {
+                    const reason = prompt(`🚨 Breakglass Justification Required\n\nTarget: ${target}\nAction: ${action}\n\nEnter detailed justification (incident ticket required):`);
+                    if (reason && reason.trim()) {
+                        const finalConfirm = confirm(`🚨 BREAKGLASS EMERGENCY OVERRIDE\n\n` +
+                            `Target: ${target}\n` +
+                            `Action: ${action}\n` +
+                            `Justification: ${reason}\n\n` +
+                            `⚠️ This will bypass all safety policies and gates\n` +
+                            `⚠️ Leadership and compliance teams will be immediately notified\n` +
+                            `⚠️ This action is fully audited and may require follow-up\n\n` +
+                            `Do you understand the risks and confirm this breakglass action?`);
+                        if (finalConfirm) {
+                            alert(`🚨 Breakglass Override Executed!\n\n` +
+                                `Target: ${target}\n` +
+                                `Action: ${action}\n\n` +
+                                `All safety policies have been bypassed.\n` +
+                                `Leadership, oncall, and compliance teams have been notified.\n` +
+                                `Full audit trail has been logged.\n\n` +
+                                `Please document this in the incident ticket immediately.`);
+
+                            // Log the action
+                            logDeploymentAction('BREAKGLASS', target, `${action}. Justification: ${reason}`);
+                            // Route to deployment actions view
+                            routeToDeploymentActions();
+                        }
+                    }
+                }
+            }
+        }
+
+        // Toggle poison dropdown menu
+        function togglePoisonDropdown() {
+            const menu = document.getElementById('poisonDropdownMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Toggle policies expand/collapse
+        function togglePoliciesExpand() {
+            const grid = document.getElementById('policiesGrid');
+            const icon = document.getElementById('policiesToggleIcon');
+            grid.classList.toggle('collapsed');
+            icon.textContent = grid.classList.contains('collapsed') ? '+' : '−';
+        }
+
+        // Action Page Switching via Dropdown
+        function switchActionPage() {
+            const selectedAction = document.getElementById('actionSelectorDropdown').value;
+
+            // Hide all action pages
+            document.querySelectorAll('.action-page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected action page
+            document.getElementById('page-' + selectedAction).classList.add('active');
+        }
+
+        // Tab Dropdown Toggle
+        function toggleActionTabDropdown() {
+            const menu = document.getElementById('actionTabDropdownMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.tab-dropdown');
+            const menu = document.getElementById('actionTabDropdownMenu');
+            if (menu && dropdown && !dropdown.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Handle tab dropdown item clicks
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownItems = document.querySelectorAll('.tab-dropdown-item');
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const actionView = this.getAttribute('data-action-view');
+
+                    // Hide all views
+                    document.querySelectorAll('.clouds-container, .deployment-actions-container').forEach(container => {
+                        container.style.display = 'none';
+                    });
+
+                    // Show deployment actions container
+                    const deploymentContainer = document.querySelector('.deployment-actions-container');
+                    deploymentContainer.style.display = 'block';
+
+                    // Hide the view toggle
+                    const viewToggle = document.querySelector('.view-toggle');
+                    if (viewToggle) {
+                        viewToggle.style.display = 'none';
+                    }
+
+                    // Update which action page is shown
+                    document.querySelectorAll('.action-page').forEach(page => {
+                        page.classList.remove('active');
+                    });
+                    document.getElementById('page-' + actionView).classList.add('active');
+
+                    // Sync the internal dropdown selector
+                    const internalDropdown = document.getElementById('actionSelectorDropdown');
+                    if (internalDropdown) {
+                        internalDropdown.value = actionView;
+                    }
+
+                    // Update tab states
+                    document.querySelectorAll('.tab').forEach(tab => {
+                        tab.classList.remove('active');
+                    });
+                    document.querySelector('.tab-dropdown-btn').classList.add('active');
+
+                    // Close dropdown
+                    document.getElementById('actionTabDropdownMenu').classList.remove('show');
+                });
+            });
+        });
+
+        // Unpoison Build Function
+        function unpoisonBuild(buildNumber) {
+            const reason = prompt(`🔓 Unpoison Build ${buildNumber}\n\nEnter reason for unpoisoning:`);
+            if (reason && reason.trim()) {
+                alert(`Build ${buildNumber} has been unpoisoned.\n\nReason: ${reason}`);
+                // Here you would call your backend API
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.action-dropdown');
+            const menu = document.getElementById('poisonDropdownMenu');
+            if (menu && dropdown && !dropdown.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+
+        // Unpoison function
+        function globalUnpoison() {
+            const buildVersion = prompt(`🔓 Unpoison Build\n\nEnter build version to unpoison:`);
+            if (buildVersion && buildVersion.trim()) {
+                const reason = prompt(`🔓 Unpoison Build ${buildVersion}\n\nEnter reason for unpoisoning this build:`);
+                if (reason && reason.trim()) {
+                    const confirmed = confirm(`🔓 Unpoison Build Confirmation\n\n` +
+                        `Build: ${buildVersion}\n` +
+                        `Reason: ${reason}\n\n` +
+                        `This will remove the poison flag from the build and allow it to be deployed.\n\n` +
+                        `Continue?`);
+                    if (confirmed) {
+                        alert(`🔓 Build Unpoisoned!\n\n` +
+                            `Build ${buildVersion} has been unpoisoned.\n` +
+                            `Reason: ${reason}\n\n` +
+                            `The build is now available for deployment.\n` +
+                            `Oncall engineers and administrators have been notified.`);
+
+                        // Log the action
+                        logDeploymentAction('UNPOISON', 'Build ' + buildVersion, `Unpoisoned. Reason: ${reason}`);
+                        // Route to deployment actions view
+                        routeToDeploymentActions();
+                    }
+                }
+            }
+        }
+
+        // Show poison history
+        function showPoisonHistory() {
+            alert(`🕐 Build Poison History\n\n` +
+                `This feature will show the complete history of poison/unpoison actions.\n\n` +
+                `Features include:\n` +
+                `• All poisoned builds with reasons\n` +
+                `• Unpoison history\n` +
+                `• Who performed the action\n` +
+                `• Timestamps\n` +
+                `• Current poison status\n\n` +
+                `Coming soon...`);
+        }
+
+        // Sorting and filtering for action history table
+        let sortDirection = {};
+
+        function sortTable(columnIndex) {
+            const table = document.querySelector('.deployment-actions-table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            // Toggle sort direction
+            if (!sortDirection[columnIndex]) {
+                sortDirection[columnIndex] = 'asc';
+            } else if (sortDirection[columnIndex] === 'asc') {
+                sortDirection[columnIndex] = 'desc';
+            } else {
+                sortDirection[columnIndex] = 'asc';
+            }
+
+            const direction = sortDirection[columnIndex];
+
+            rows.sort((a, b) => {
+                let aValue, bValue;
+
+                // Special handling for timestamp column with data-sort attribute
+                if (columnIndex === 0) {
+                    aValue = a.cells[columnIndex].getAttribute('data-sort') || a.cells[columnIndex].textContent.trim();
+                    bValue = b.cells[columnIndex].getAttribute('data-sort') || b.cells[columnIndex].textContent.trim();
+                } else {
+                    aValue = a.cells[columnIndex].textContent.trim();
+                    bValue = b.cells[columnIndex].textContent.trim();
+                }
+
+                if (direction === 'asc') {
+                    return aValue.localeCompare(bValue);
+                } else {
+                    return bValue.localeCompare(aValue);
+                }
+            });
+
+            // Clear and re-append sorted rows
+            rows.forEach(row => tbody.appendChild(row));
+
+            // Update sort indicators
+            const headers = table.querySelectorAll('th.sortable');
+            headers.forEach((header, index) => {
+                const indicator = header.querySelector('.sort-indicator');
+                if (indicator) {
+                    if (index === columnIndex) {
+                        indicator.textContent = direction === 'asc' ? '↑' : '↓';
+                        indicator.style.color = '#0078d4';
+                    } else {
+                        indicator.textContent = '⇅';
+                        indicator.style.color = '#8a8886';
+                    }
+                }
+            });
+        }
+
+        function filterActions() {
+            const actionTypeFilter = document.getElementById('actionTypeFilter').value;
+            const environmentFilter = document.getElementById('environmentFilter').value;
+
+            const tbody = document.getElementById('deployment-actions-tbody');
+            const rows = tbody.querySelectorAll('tr');
+
+            rows.forEach(row => {
+                const actionType = row.cells[1]?.textContent.trim() || '';
+                const environment = row.cells[2]?.textContent.trim() || '';
+
+                let showRow = true;
+
+                // Filter by action type
+                if (actionTypeFilter && !actionType.includes(actionTypeFilter)) {
+                    showRow = false;
+                }
+
+                // Filter by environment
+                if (environmentFilter && !environment.includes(environmentFilter)) {
+                    showRow = false;
+                }
+
+                row.style.display = showRow ? '' : 'none';
+            });
+        }
+
+        // Toggle active stages filter
+        function toggleActiveStages() {
+            const isChecked = document.getElementById('activeStagesToggle').checked;
+            const completedStages = document.querySelectorAll('.stage-item[data-stage-status="completed"]');
+
+            completedStages.forEach(stage => {
+                if (isChecked) {
+                    // Hide completed stages (show only active)
+                    stage.classList.remove('show-all');
+                } else {
+                    // Show all stages
+                    stage.classList.add('show-all');
+                }
+            });
+        }
+
+        // Build details modal popup
+        function showBuildDetails(buildNumber, buildId) {
+            const panel = document.getElementById('buildDetailsPanel');
+            const overlay = document.getElementById('buildDetailsPanelOverlay');
+
+            // Mock deployment data based on build number
+            const deploymentData = {
+                '1.5.2726': { triggered: '03/24/2026, 10:34 AM', deployer: 'Jane Doe' },
+                '1.5.2724': { triggered: '03/24/2026, 08:12 AM', deployer: 'John Smith' },
+                '1.5.2722': { triggered: '03/23/2026, 03:45 PM', deployer: 'Jane Doe' },
+                '1.5.2720': { triggered: '03/23/2026, 11:22 AM', deployer: 'Mike Johnson' },
+                '1.5.2718': { triggered: '03/22/2026, 02:15 PM', deployer: 'Sarah Williams' },
+                '1.5.2714': { triggered: '03/21/2026, 04:38 PM', deployer: 'Jane Doe' },
+                '1.5.2704': { triggered: '03/20/2026, 09:51 AM', deployer: 'John Smith' },
+                '1.5.2700': { triggered: '03/19/2026, 01:27 PM', deployer: 'Jane Doe' }
+            };
+
+            const data = deploymentData[buildNumber] || { triggered: 'N/A', deployer: 'N/A' };
+
+            // Update panel content with build details
+            document.getElementById('buildDetailsNumber').textContent = `Build ${buildNumber}`;
+            document.getElementById('buildReleasePipelineLink').href = `https://skype.visualstudio.com/SCC/_release?definitionId=42&_a=releases`;
+            document.getElementById('buildDetailsTriggered').textContent = data.triggered;
+            document.getElementById('buildDetailsDeployer').textContent = data.deployer;
+
+            // Reset toggle to show only active stages
+            document.getElementById('activeStagesToggle').checked = true;
+            toggleActiveStages();
+
+            // Show panel
+            panel.classList.add('show');
+            overlay.classList.add('show');
+        }
+
+        function closeBuildDetails() {
+            const panel = document.getElementById('buildDetailsPanel');
+            const overlay = document.getElementById('buildDetailsPanelOverlay');
+            panel.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+
+        // Close build details modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const panel = document.getElementById('buildDetailsPanel');
+                if (panel && panel.classList.contains('show')) {
+                    closeBuildDetails();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
