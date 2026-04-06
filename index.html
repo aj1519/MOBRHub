@@ -381,6 +381,16 @@
             padding: 4px 8px;
             margin-left: auto;
             margin-right: 8px;
+            position: relative;
+        }
+        .lkg-badge.na {
+            background: #f3f2f1;
+            border: 1px solid #8a8886;
+        }
+        .lkg-badge.na .lkg-badge-icon,
+        .lkg-badge.na .lkg-badge-text,
+        .lkg-badge.na .lkg-badge-version {
+            color: #8a8886;
         }
         .lkg-badge-icon {
             font-size: 10px;
@@ -412,6 +422,62 @@
             color: #0d5e0d;
         }
         .lkg-badge-version-link::after {
+            content: "↗";
+            font-size: 8px;
+            opacity: 0.8;
+        }
+        .lkg-badge-dropdown {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+        }
+        .lkg-badge-dropdown-arrow {
+            font-size: 8px;
+            color: #107c10;
+            transition: transform 0.2s;
+        }
+        .lkg-badge-dropdown.open .lkg-badge-dropdown-arrow {
+            transform: rotate(180deg);
+        }
+        .lkg-badge-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 1px solid #107c10;
+            border-radius: 2px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            min-width: 120px;
+            margin-top: 4px;
+        }
+        .lkg-badge-dropdown-menu.show {
+            display: block;
+        }
+        .lkg-badge-dropdown-item {
+            padding: 6px 10px;
+            border-bottom: 1px solid #e1dfdd;
+        }
+        .lkg-badge-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        .lkg-badge-dropdown-item a {
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: #107c10;
+            text-decoration: underline;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .lkg-badge-dropdown-item a:hover {
+            color: #0d5e0d;
+        }
+        .lkg-badge-dropdown-item a::after {
             content: "↗";
             font-size: 8px;
             opacity: 0.8;
@@ -2202,6 +2268,7 @@
                             <div class="ring-header">
                                 <div class="ring-title">
                                     <span class="ring-name">SDF</span>
+                                    <!-- Single LKG - No dropdown -->
                                     <div class="lkg-badge">
                                         <span class="lkg-badge-icon">✓</span>
                                         <span class="lkg-badge-text">LKG:</span>
@@ -2238,10 +2305,25 @@
                             <div class="ring-header">
                                 <div class="ring-title">
                                     <span class="ring-name">MSIT</span>
+                                    <!-- Multiple LKG - With dropdown -->
                                     <div class="lkg-badge">
                                         <span class="lkg-badge-icon">✓</span>
                                         <span class="lkg-badge-text">LKG:</span>
-                                        <span class="lkg-badge-version">1.5.2718</span>
+                                        <div class="lkg-badge-dropdown" onclick="toggleLkgDropdown(event, this)">
+                                            <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="lkg-badge-version-link" target="_blank" title="03/22/2026, 02:15 PM" onclick="event.stopPropagation()">1.5.2718</a>
+                                            <span class="lkg-badge-dropdown-arrow">▼</span>
+                                            <div class="lkg-badge-dropdown-menu">
+                                                <div class="lkg-badge-dropdown-item">
+                                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" target="_blank" title="03/22/2026, 02:15 PM">1.5.2718</a>
+                                                </div>
+                                                <div class="lkg-badge-dropdown-item">
+                                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" target="_blank" title="03/21/2026, 04:38 PM">1.5.2714</a>
+                                                </div>
+                                                <div class="lkg-badge-dropdown-item">
+                                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2704" target="_blank" title="03/20/2026, 09:51 AM">1.5.2704</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -2277,7 +2359,7 @@
                                     <div class="lkg-badge">
                                         <span class="lkg-badge-icon">✓</span>
                                         <span class="lkg-badge-text">LKG:</span>
-                                        <span class="lkg-badge-version">1.5.2714</span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="lkg-badge-version-link" target="_blank" title="03/21/2026, 04:38 PM">1.5.2714</a>
                                     </div>
                                 </div>
                             </div>
@@ -2311,7 +2393,7 @@
                                     <div class="lkg-badge">
                                         <span class="lkg-badge-icon">✓</span>
                                         <span class="lkg-badge-text">LKG:</span>
-                                        <span class="lkg-badge-version">1.5.2714</span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="lkg-badge-version-link" target="_blank" title="03/21/2026, 04:38 PM">1.5.2714</a>
                                     </div>
                                 </div>
                             </div>
@@ -2335,10 +2417,10 @@
                             <div class="ring-header">
                                 <div class="ring-title">
                                     <span class="ring-name">General</span>
-                                    <div class="lkg-badge">
-                                        <span class="lkg-badge-icon">✓</span>
+                                    <div class="lkg-badge na">
+                                        <span class="lkg-badge-icon">—</span>
                                         <span class="lkg-badge-text">LKG:</span>
-                                        <span class="lkg-badge-version">1.5.2714</span>
+                                        <span class="lkg-badge-version">N/A</span>
                                     </div>
                                 </div>
                             </div>
@@ -2365,7 +2447,7 @@
                                     <div class="lkg-badge">
                                         <span class="lkg-badge-icon">✓</span>
                                         <span class="lkg-badge-text">LKG:</span>
-                                        <span class="lkg-badge-version">1.5.2714</span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" class="lkg-badge-version-link" target="_blank" title="03/21/2026, 04:38 PM">1.5.2714</a>
                                     </div>
                                 </div>
                             </div>
@@ -2392,7 +2474,21 @@
                                     <div class="lkg-badge">
                                         <span class="lkg-badge-icon">✓</span>
                                         <span class="lkg-badge-text">LKG:</span>
-                                        <span class="lkg-badge-version">1.5.2714</span>
+                                        <div class="lkg-badge-dropdown" onclick="toggleLkgDropdown(event, this)">
+                                            <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="lkg-badge-version-link" target="_blank" title="03/23/2026, 11:22 AM" onclick="event.stopPropagation()">1.5.2720</a>
+                                            <span class="lkg-badge-dropdown-arrow">▼</span>
+                                            <div class="lkg-badge-dropdown-menu">
+                                                <div class="lkg-badge-dropdown-item">
+                                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" target="_blank" title="03/23/2026, 11:22 AM">1.5.2720</a>
+                                                </div>
+                                                <div class="lkg-badge-dropdown-item">
+                                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" target="_blank" title="03/22/2026, 02:15 PM">1.5.2718</a>
+                                                </div>
+                                                <div class="lkg-badge-dropdown-item">
+                                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2714" target="_blank" title="03/21/2026, 04:38 PM">1.5.2714</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -3156,6 +3252,34 @@
             // Open the poison request modal
             document.getElementById('poisonModalOverlay').classList.add('show');
         }
+
+        // Toggle LKG dropdown
+        function toggleLkgDropdown(event, element) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const menu = element.querySelector('.lkg-badge-dropdown-menu');
+            const isOpen = menu.classList.contains('show');
+
+            // Close all other dropdowns
+            document.querySelectorAll('.lkg-badge-dropdown-menu.show').forEach(m => {
+                m.classList.remove('show');
+            });
+
+            // Toggle this dropdown
+            if (!isOpen) {
+                menu.classList.add('show');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.lkg-badge-dropdown')) {
+                document.querySelectorAll('.lkg-badge-dropdown-menu.show').forEach(m => {
+                    m.classList.remove('show');
+                });
+            }
+        });
 
         function closePoisonModal() {
             document.getElementById('poisonModalOverlay').classList.remove('show');
