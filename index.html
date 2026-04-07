@@ -3145,20 +3145,6 @@
         document.querySelector('.add-tab').addEventListener('click', function() {
             alert('Add Extension\n\nThis portal is designed to be extensible. Future extensions could include:\n• Custom dashboards\n• Integration with other tools\n• Team-specific views\n• Analytics and reporting');
         });
-        // Make LKG badges clickable for quick rollback
-        document.querySelectorAll('.lkg-badge').forEach(badge => {
-            badge.style.cursor = 'pointer';
-            badge.addEventListener('click', function(e) {
-                // Don't trigger if clicking on the link itself
-                if (e.target.tagName === 'A') return;
-
-                const versionEl = this.querySelector('.lkg-badge-version, .lkg-badge-version-link');
-                if (versionEl) {
-                    const version = versionEl.textContent;
-                    alert(`Quick action: Rollback to LKG ${version}`);
-                }
-            });
-        });
         // Function to log deployment actions
         function logDeploymentAction(actionType, target, details) {
             const timestamp = new Date().toLocaleString('en-US', {
@@ -3517,11 +3503,16 @@
                 }
             });
 
-            // Add click handlers to all build links
+            // Add click handlers to all build links (except those in deployment-actions-container)
             const buildLinks = document.querySelectorAll('.build-number-link, .build-link, .version-number-link, .legend-build, .lkg-badge-version-link');
             console.log('Found build links:', buildLinks.length);
             buildLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
+                    // Skip if the link is inside deployment-actions-container (let it navigate normally)
+                    if (this.closest('.deployment-actions-container')) {
+                        return;
+                    }
+
                     e.preventDefault();
                     const buildNumber = this.textContent.trim();
                     const buildId = this.href.match(/buildId=(\d+)/)?.[1] || 'N/A';
