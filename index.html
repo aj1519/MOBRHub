@@ -650,6 +650,10 @@
             font-size: 10px;
             opacity: 0.8;
         }
+        /* Remove arrow from build links in deployment actions table */
+        .deployment-actions-container .build-link::after {
+            content: none;
+        }
         .action-icon {
             color: #0078d4;
             cursor: pointer;
@@ -2041,13 +2045,13 @@
                 <div class="tab-separator"></div>
                 <div class="tab-dropdown">
                     <button class="tab-dropdown-btn" onclick="toggleActionTabDropdown()">
-                        <span>Deployment Actions</span>
+                        <span>Deployment Management</span>
                         <span style="font-size: 10px; margin-left: 4px;">▼</span>
                     </button>
                     <div class="tab-dropdown-menu" id="actionTabDropdownMenu">
                         <div class="tab-dropdown-item" data-action-view="poison">
                             <span>☠</span>
-                            <span>Poison</span>
+                            <span>Build Poisoning</span>
                         </div>
                         <div class="tab-dropdown-item" data-action-view="rollback">
                             <span>🔄</span>
@@ -3111,6 +3115,12 @@
                 // Handle active tab switching for working tabs
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
+
+                // Remove active state from dropdown button
+                const dropdownBtn = document.querySelector('.tab-dropdown-btn');
+                if (dropdownBtn) {
+                    dropdownBtn.classList.remove('active');
+                }
 
                 // Handle view switching
                 const cloudsContainer = document.querySelector('.clouds-container');
