@@ -1851,6 +1851,147 @@
             margin-top: 6px;
             line-height: 1.4;
         }
+        /* Warning Section for Active Continuous Poisoning */
+        .unpoison-warning-section {
+            background: #fff8e1;
+            border: 1px solid #f9a825;
+            border-radius: 2px;
+            margin-bottom: 24px;
+        }
+        .unpoison-warning-header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .unpoison-warning-header:hover {
+            background: #fff3cd;
+        }
+        .unpoison-warning-icon {
+            font-size: 18px;
+            color: #f57c00;
+        }
+        .unpoison-warning-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #323130;
+            flex: 1;
+        }
+        .unpoison-warning-toggle {
+            font-size: 12px;
+            color: #605e5c;
+            transition: transform 0.2s;
+        }
+        .unpoison-warning-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+        .unpoison-warning-content {
+            padding: 0;
+            display: block;
+        }
+        .unpoison-warning-content.collapsed {
+            display: none;
+        }
+        .unpoison-warning-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .unpoison-warning-table thead {
+            background: #fdd835;
+        }
+        .unpoison-warning-table th {
+            padding: 10px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #323130;
+        }
+        .unpoison-warning-table td {
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #323130;
+            border-top: 1px solid #f9a825;
+        }
+        .unpoison-pipeline-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .unpoison-pipeline-def {
+            font-size: 11px;
+            color: #605e5c;
+        }
+        .unpoison-version-link {
+            color: #0078d4;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .unpoison-version-link:hover {
+            text-decoration: underline;
+        }
+        .unpoison-seal-btn {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .unpoison-seal-btn:hover {
+            background: #106ebe;
+        }
+        .unpoison-header-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        .unpoison-header-btn {
+            background: white;
+            border: 1px solid #8a8886;
+            padding: 8px 16px;
+            border-radius: 2px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #323130;
+        }
+        .unpoison-header-btn:hover {
+            background: #f3f2f1;
+            border-color: #605e5c;
+        }
+        .unpoison-header-btn.primary {
+            background: #0078d4;
+            color: white;
+            border-color: #0078d4;
+        }
+        .unpoison-header-btn.primary:hover {
+            background: #106ebe;
+            border-color: #106ebe;
+        }
+        .unpoison-submit-btn {
+            background: #107c10;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .unpoison-submit-btn:hover {
+            background: #0e6b0e;
+        }
         .poison-char-count {
             font-size: 12px;
             color: #605e5c;
@@ -2798,8 +2939,18 @@
                 <div class="poison-modal-overlay" id="unpoisonFormModal">
                     <div class="poison-modal">
                         <div class="poison-modal-header">
-                            <h2>🔓 Unpoison Build</h2>
-                            <button class="close-btn" onclick="closeUnpoisonModal()">×</button>
+                            <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #323130;">Create Unpoison Request</h2>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <button class="unpoison-header-btn" onclick="alert('History feature coming soon!')">
+                                    <span>🕐</span>
+                                    <span>History</span>
+                                </button>
+                                <button class="unpoison-header-btn primary" onclick="closeUnpoisonModal(); openPoisonModal();">
+                                    <span>🛡️</span>
+                                    <span>Poison</span>
+                                </button>
+                                <button class="close-btn" onclick="closeUnpoisonModal()">×</button>
+                            </div>
                         </div>
                         <div class="poison-modal-body">
                     <div class="poison-section">
@@ -2820,7 +2971,61 @@
                                 The trainset represents microservices within a service. Not providing a trainset means the unpoisoning action would be scoped for all release pipelines of the service.
                             </div>
                         </div>
+                    </div>
 
+                    <!-- Active Continuous Poisoning Warning -->
+                    <div class="unpoison-warning-section">
+                        <div class="unpoison-warning-header" onclick="toggleUnpoisonWarning()">
+                            <span class="unpoison-warning-toggle" id="unpoisonWarningToggle">▼</span>
+                            <span class="unpoison-warning-icon">⚠️</span>
+                            <span class="unpoison-warning-title">Active Continuous Poisoning Detected</span>
+                        </div>
+                        <div class="unpoison-warning-content" id="unpoisonWarningContent">
+                            <table class="unpoison-warning-table">
+                                <thead>
+                                    <tr>
+                                        <th>Build Pipeline</th>
+                                        <th>Start Version</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="unpoison-pipeline-name">SCC Official Incremental Build</div>
+                                            <div class="unpoison-pipeline-def">Definition ID: 12345</div>
+                                        </td>
+                                        <td>
+                                            <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=20240218" class="unpoison-version-link" target="_blank">#20240218.2</a>
+                                        </td>
+                                        <td>
+                                            <button class="unpoison-seal-btn" onclick="alert('Seal action coming soon!')">
+                                                <span>🔒</span>
+                                                <span>Seal</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="unpoison-pipeline-name">SCC Service Fabric Build</div>
+                                            <div class="unpoison-pipeline-def">Definition ID: 12347</div>
+                                        </td>
+                                        <td>
+                                            <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=20240215" class="unpoison-version-link" target="_blank">#20240215.1</a>
+                                        </td>
+                                        <td>
+                                            <button class="unpoison-seal-btn" onclick="alert('Seal action coming soon!')">
+                                                <span>🔒</span>
+                                                <span>Seal</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="poison-section">
                         <div class="poison-form-group">
                             <label class="poison-form-label">
                                 Build Pipeline
@@ -2828,7 +3033,7 @@
                             </label>
                             <select class="poison-form-select" id="unpoisonBuildPipelineTab">
                                 <option value="">Select a build pipeline</option>
-                                <option value="scc-main" selected>SCC - cosmic-release Pipeline</option>
+                                <option value="scc-main">SCC - cosmic-release Pipeline</option>
                                 <option value="scc-release">SCC - Release Pipeline</option>
                                 <option value="scc-hotfix">SCC - Hotfix Pipeline</option>
                                 <option value="teams-main">Teams - cosmic-release Pipeline</option>
@@ -2836,36 +3041,12 @@
                         </div>
                     </div>
 
-                    <div class="poison-section">
-                        <div class="poison-section-title">Build Version</div>
-
-                        <div class="poison-form-group">
-                            <label class="poison-form-label">
-                                Currently Poisoned Build Version
-                                <span class="required">*</span>
-                            </label>
-                            <select class="poison-form-select" id="unpoisonBuildVersionTab">
-                                <option value="">Select poisoned build to unpoison</option>
-                                <option value="1.5.2726">1.5.2726 (Poisoned on 03/25/2026)</option>
-                                <option value="1.5.2718">1.5.2718 (Poisoned on 03/23/2026)</option>
-                            </select>
-                        </div>
-
-                        <div class="poison-form-group">
-                            <label class="poison-form-label">
-                                Reason
-                                <span class="required">*</span>
-                            </label>
-                            <textarea class="poison-form-textarea" id="unpoisonReasonTab" placeholder="Describe why this build is being unpoisoned" maxlength="250"></textarea>
-                            <div class="poison-char-count">
-                                <span id="unpoisonReasonCountTab">0</span>/250 characters
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="form-actions">
                         <button class="action-btn" onclick="closeUnpoisonModal()">Cancel</button>
-                        <button class="action-btn primary" onclick="submitUnpoisonRequestTab()">🔓 Unpoison Build</button>
+                        <button class="unpoison-submit-btn" onclick="submitUnpoisonRequestTab()">
+                            <span>🔓</span>
+                            <span>Submit</span>
+                        </button>
                     </div>
                         </div>
                     </div>
@@ -3373,6 +3554,20 @@
             document.getElementById('unpoisonFormModal').classList.remove('show');
         }
 
+        // Toggle unpoisoning warning section
+        function toggleUnpoisonWarning() {
+            const content = document.getElementById('unpoisonWarningContent');
+            const toggle = document.getElementById('unpoisonWarningToggle');
+
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+            }
+        }
+
         // Close modals when clicking outside
         document.addEventListener('click', function(e) {
             if (e.target.classList.contains('poison-modal-overlay')) {
@@ -3432,8 +3627,6 @@
             const serviceTreeId = document.getElementById('unpoisonServiceTreeIdTab').value.trim();
             const trainsetId = document.getElementById('unpoisonTrainsetIdTab').value.trim();
             const buildPipeline = document.getElementById('unpoisonBuildPipelineTab').value;
-            const buildVersion = document.getElementById('unpoisonBuildVersionTab').value;
-            const reason = document.getElementById('unpoisonReasonTab').value.trim();
 
             // Validation
             if (!serviceTreeId) {
@@ -3444,14 +3637,6 @@
                 alert('❌ Build Pipeline is required');
                 return;
             }
-            if (!buildVersion) {
-                alert('❌ Build Version is required');
-                return;
-            }
-            if (!reason) {
-                alert('❌ Reason is required');
-                return;
-            }
 
             // Build scope text
             const scopeText = trainsetId
@@ -3460,16 +3645,15 @@
 
             // Success message
             alert(`🔓 Unpoison Request Submitted!\n\n` +
-                `Build: ${buildVersion}\n` +
                 `Scope: ${scopeText}\n` +
-                `Pipeline: ${buildPipeline}\n` +
-                `Reason: ${reason}\n\n` +
+                `Pipeline: ${buildPipeline}\n\n` +
                 `The build poison flag will be removed within 5 minutes.\n` +
                 `Deployment can proceed normally after unpoisoning is complete.`);
 
             // Reset form and close modal
-            document.getElementById('unpoisonReasonTab').value = '';
-            document.getElementById('unpoisonReasonCountTab').textContent = '0';
+            document.getElementById('unpoisonServiceTreeIdTab').value = 'SVC-12345';
+            document.getElementById('unpoisonTrainsetIdTab').value = '';
+            document.getElementById('unpoisonBuildPipelineTab').selectedIndex = 0;
             closeUnpoisonModal();
         }
 
