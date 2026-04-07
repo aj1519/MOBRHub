@@ -1272,6 +1272,10 @@
             font-size: 14px;
             opacity: 0.8;
         }
+        /* Remove arrow from build links in current status section */
+        #current-state-section .build-number-large .build-number-link::after {
+            content: none;
+        }
         .build-meta-info {
             font-size: 12px;
             color: #605e5c;
@@ -2041,11 +2045,11 @@
                 </select>
             </div>
             <div class="tabs">
-                <div class="tab active" data-view="service-viz">Visualization</div>
+                <div class="tab active" data-view="service-viz">Visualize</div>
                 <div class="tab-separator"></div>
                 <div class="tab-dropdown">
                     <button class="tab-dropdown-btn" onclick="toggleActionTabDropdown()">
-                        <span>Deployment Management</span>
+                        <span>Manage</span>
                         <span style="font-size: 10px; margin-left: 4px;">▼</span>
                     </button>
                     <div class="tab-dropdown-menu" id="actionTabDropdownMenu">
