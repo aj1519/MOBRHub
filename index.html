@@ -1345,6 +1345,51 @@
             justify-content: flex-end;
             margin-top: 24px;
         }
+        .action-btn {
+            padding: 10px 20px;
+            border: 1px solid #8a8886;
+            border-radius: 2px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+            color: #323130;
+            font-family: 'Segoe UI', sans-serif;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .action-btn:hover {
+            background: #f3f2f1;
+            border-color: #605e5c;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .action-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .action-btn.primary {
+            background: #0078d4;
+            color: white;
+            border-color: #0078d4;
+        }
+        .action-btn.primary:hover {
+            background: #106ebe;
+            border-color: #106ebe;
+            box-shadow: 0 3px 6px rgba(0, 120, 212, 0.3);
+        }
+        .action-btn.danger {
+            background: #d13438;
+            color: white;
+            border-color: #d13438;
+        }
+        .action-btn.danger:hover {
+            background: #a80000;
+            border-color: #a80000;
+            box-shadow: 0 3px 6px rgba(168, 0, 0, 0.3);
+        }
         .action-badge {
             padding: 4px 8px;
             border-radius: 2px;
@@ -2698,13 +2743,13 @@
                             </div>
                         </div>
                         <div style="display: flex; gap: 12px;">
-                            <button class="action-btn danger" onclick="openPoisonModal()" style="padding: 8px 16px; font-size: 14px; font-weight: 600;">
-                                <span style="margin-right: 6px;">☠</span>
-                                Poison Build
+                            <button class="action-btn danger" onclick="openPoisonModal()">
+                                <span>☠</span>
+                                <span>Poison Build</span>
                             </button>
-                            <button class="action-btn primary" onclick="openUnpoisonModal()" style="padding: 8px 16px; font-size: 14px; font-weight: 600;">
-                                <span style="margin-right: 6px;">🔓</span>
-                                Unpoison Build
+                            <button class="action-btn primary" onclick="openUnpoisonModal()">
+                                <span>🔓</span>
+                                <span>Unpoison Build</span>
                             </button>
                         </div>
                     </div>
@@ -3178,7 +3223,7 @@
             </div>
             <div class="build-details-content">
                 <div class="stages-filter-header">
-                    <span class="stages-filter-label">Show active deployments only</span>
+                    <span class="stages-filter-label">Show only currently deployed stages</span>
                     <label class="toggle-switch">
                         <input type="checkbox" id="activeStagesToggle" checked onchange="toggleActiveStages()">
                         <span class="toggle-slider"></span>
