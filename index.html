@@ -2252,8 +2252,7 @@
             <div class="tabs">
                 <div class="tab active" data-view="service-viz">Visualize</div>
                 <div class="tab-separator"></div>
-                <div class="tab" data-view="poison">Poison</div>
-                <div class="tab add-tab" title="Add Extension">+</div>
+                <div class="tab" data-view="poison" title="Block specific builds from deployment to prevent issues with critical bugs, security vulnerabilities, or failed tests">Build Poison</div>
             </div>
         </div>
         <div class="header-controls">
@@ -3425,10 +3424,6 @@
                     if (deploymentActionsContainer) deploymentActionsContainer.style.display = 'block';
                 }
             });
-        });
-        // Add tab click handler
-        document.querySelector('.add-tab').addEventListener('click', function() {
-            alert('Add Extension\n\nThis portal is designed to be extensible. Future extensions could include:\n• Custom dashboards\n• Integration with other tools\n• Team-specific views\n• Analytics and reporting');
         });
         // Function to log deployment actions
         function logDeploymentAction(actionType, target, details) {
