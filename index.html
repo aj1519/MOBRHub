@@ -3346,16 +3346,16 @@
                 const deploymentActionsContainer = document.querySelector('.deployment-actions-container');
 
                 // Hide all views
-                cloudsContainer.style.display = 'none';
-                viewToggle.style.display = 'none';
-                deploymentActionsContainer.style.display = 'none';
+                if (cloudsContainer) cloudsContainer.style.display = 'none';
+                if (viewToggle) viewToggle.style.display = 'none';
+                if (deploymentActionsContainer) deploymentActionsContainer.style.display = 'none';
 
                 // Show the appropriate view
                 if (view === 'service-viz') {
-                    cloudsContainer.style.display = 'flex';
-                    viewToggle.style.display = 'flex';
+                    if (cloudsContainer) cloudsContainer.style.display = 'flex';
+                    if (viewToggle) viewToggle.style.display = 'flex';
                 } else if (view === 'poison' || view === 'deployment-actions') {
-                    deploymentActionsContainer.style.display = 'block';
+                    if (deploymentActionsContainer) deploymentActionsContainer.style.display = 'block';
                 }
             });
         });
@@ -3804,65 +3804,6 @@
         }
 
         // Tab Dropdown Toggle
-        function toggleActionTabDropdown() {
-            const menu = document.getElementById('actionTabDropdownMenu');
-            menu.classList.toggle('show');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-            const dropdown = document.querySelector('.tab-dropdown');
-            const menu = document.getElementById('actionTabDropdownMenu');
-            if (menu && dropdown && !dropdown.contains(e.target)) {
-                menu.classList.remove('show');
-            }
-        });
-
-        // Handle tab dropdown item clicks
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdownItems = document.querySelectorAll('.tab-dropdown-item');
-            dropdownItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const actionView = this.getAttribute('data-action-view');
-
-                    // Hide all views
-                    document.querySelectorAll('.clouds-container, .deployment-actions-container').forEach(container => {
-                        container.style.display = 'none';
-                    });
-
-                    // Show deployment actions container
-                    const deploymentContainer = document.querySelector('.deployment-actions-container');
-                    deploymentContainer.style.display = 'block';
-
-                    // Hide the view toggle
-                    const viewToggle = document.querySelector('.view-toggle');
-                    if (viewToggle) {
-                        viewToggle.style.display = 'none';
-                    }
-
-                    // Update which action page is shown
-                    document.querySelectorAll('.action-page').forEach(page => {
-                        page.classList.remove('active');
-                    });
-                    document.getElementById('page-' + actionView).classList.add('active');
-
-                    // Sync the internal dropdown selector
-                    const internalDropdown = document.getElementById('actionSelectorDropdown');
-                    if (internalDropdown) {
-                        internalDropdown.value = actionView;
-                    }
-
-                    // Update tab states
-                    document.querySelectorAll('.tab').forEach(tab => {
-                        tab.classList.remove('active');
-                    });
-                    document.querySelector('.tab-dropdown-btn').classList.add('active');
-
-                    // Close dropdown
-                    document.getElementById('actionTabDropdownMenu').classList.remove('show');
-                });
-            });
-        });
 
         // Unpoison Build Function
         function unpoisonBuild(buildNumber) {
