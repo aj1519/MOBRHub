@@ -1407,6 +1407,21 @@
             color: #0078d4;
             border: 1px solid #c7e0f4;
         }
+        .action-badge.action-continuous {
+            background: #fff4e6;
+            color: #d83b01;
+            border: 1px solid #ffd8b8;
+        }
+        .action-badge.action-range {
+            background: #fef0ff;
+            color: #881798;
+            border: 1px solid #e8d3f0;
+        }
+        .action-badge.action-seal {
+            background: #e1f5fe;
+            color: #0078d4;
+            border: 1px solid #b3e5fc;
+        }
         .action-badge.action-rollback {
             background: #fff4ce;
             color: #8a5700;
@@ -2815,6 +2830,34 @@
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2722" class="build-link" target="_blank">1.5.2722</a>
+                                        <span style="color: #605e5c; margin: 0 4px;">→</span>
+                                        <span style="color: #d83b01; font-weight: 600;">ongoing</span>
+                                    </td>
+                                    <td><span class="action-badge action-continuous">CONTINUOUS</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260324183000">03/24/2026, 06:30 PM</td>
+                                    <td>SVC-12345</td>
+                                    <td>Continuous poisoning started due to repeated build failures - investigating root cause</td>
+                                    <td>John Smith</td>
+                                    <td><span class="status-badge" style="background: #fff4e6; color: #d83b01; border: 1px solid #ffd8b8;">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2715" class="build-link" target="_blank">1.5.2715</a>
+                                        <span style="color: #605e5c; margin: 0 4px;">→</span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2719" class="build-link" target="_blank">1.5.2719</a>
+                                    </td>
+                                    <td><span class="action-badge action-range">RANGE</span></td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td data-sort="20260324114500">03/24/2026, 11:45 AM</td>
+                                    <td>SVC-12345</td>
+                                    <td>Range poisoning for builds with known configuration issue affecting authentication service</td>
+                                    <td>Sarah Williams</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="build-link" target="_blank">1.5.2720</a></td>
                                     <td><span class="action-badge action-unpoison">UNPOISON</span></td>
                                     <td>SCC - cosmic-release Pipeline</td>
@@ -2835,6 +2878,20 @@
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2698" class="build-link" target="_blank">1.5.2698</a>
+                                        <span style="color: #605e5c; margin: 0 4px;">→</span>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2702" class="build-link" target="_blank">1.5.2702</a>
+                                    </td>
+                                    <td><span class="action-badge action-seal">SEAL</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260323094500">03/23/2026, 09:45 AM</td>
+                                    <td>SVC-12345</td>
+                                    <td>Sealed continuous poisoning after confirming all affected builds are identified</td>
+                                    <td>Mike Johnson</td>
+                                    <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
                                     <td><span class="action-badge action-unpoison">UNPOISON</span></td>
                                     <td>SCC - Release Pipeline</td>
@@ -2843,6 +2900,20 @@
                                     <td>Tests passing - safe to proceed with deployment</td>
                                     <td>John Smith</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2698" class="build-link" target="_blank">1.5.2698</a>
+                                        <span style="color: #605e5c; margin: 0 4px;">→</span>
+                                        <span style="color: #d83b01; font-weight: 600;">ongoing</span>
+                                    </td>
+                                    <td><span class="action-badge action-continuous">CONTINUOUS</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260322084500">03/22/2026, 08:45 AM</td>
+                                    <td>SVC-12345</td>
+                                    <td>Started continuous poisoning for builds with intermittent test failures</td>
+                                    <td>Sarah Williams</td>
+                                    <td><span class="status-badge" style="background: #fff4e6; color: #d83b01; border: 1px solid #ffd8b8;">Active</span></td>
                                 </tr>
                                 <tr>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
