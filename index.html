@@ -3791,13 +3791,18 @@
                 }
             });
 
-            // Add click handlers to all build links (except those in deployment-actions-container)
+            // Add click handlers to all build links (except those in deployment-actions-container and LKG badges)
             const buildLinks = document.querySelectorAll('.build-number-link, .build-link, .version-number-link, .legend-build, .lkg-badge-version-link');
             console.log('Found build links:', buildLinks.length);
             buildLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     // Skip if the link is inside deployment-actions-container (let it navigate normally)
                     if (this.closest('.deployment-actions-container')) {
+                        return;
+                    }
+
+                    // Skip if the link is an LKG badge link (let it navigate normally)
+                    if (this.classList.contains('lkg-badge-version-link') || this.closest('.lkg-badge')) {
                         return;
                     }
 
