@@ -2234,26 +2234,7 @@
             <div class="tabs">
                 <div class="tab active" data-view="service-viz">Visualize</div>
                 <div class="tab-separator"></div>
-                <div class="tab-dropdown">
-                    <button class="tab-dropdown-btn" onclick="toggleActionTabDropdown()">
-                        <span>Manage</span>
-                        <span style="font-size: 10px; margin-left: 4px;">▼</span>
-                    </button>
-                    <div class="tab-dropdown-menu" id="actionTabDropdownMenu">
-                        <div class="tab-dropdown-item" data-action-view="poison">
-                            <span>☠</span>
-                            <span>Build Poisoning</span>
-                        </div>
-                        <div class="tab-dropdown-item" data-action-view="rollback">
-                            <span>🔄</span>
-                            <span>Rollback</span>
-                        </div>
-                        <div class="tab-dropdown-item" data-action-view="breakglass">
-                            <span>🚨</span>
-                            <span>Breakglass</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="tab" data-view="poison">Poison</div>
                 <div class="tab add-tab" title="Add Extension">+</div>
             </div>
         </div>
@@ -2812,11 +2793,11 @@
                         <table class="deployment-actions-table">
                             <thead>
                                 <tr>
-                                    <th class="sortable" onclick="sortTable(0)">Timestamp <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(0)">Build Version <span class="sort-indicator">⇅</span></th>
                                     <th class="sortable" onclick="sortTable(1)">Action Type <span class="sort-indicator">⇅</span></th>
-                                    <th class="sortable" onclick="sortTable(2)">Service Tree ID <span class="sort-indicator">⇅</span></th>
-                                    <th class="sortable" onclick="sortTable(3)">Build Pipeline <span class="sort-indicator">⇅</span></th>
-                                    <th class="sortable" onclick="sortTable(4)">Build Version <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(2)">Build Pipeline <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(3)">Timestamp <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(4)">Service Tree ID <span class="sort-indicator">⇅</span></th>
                                     <th>Reason</th>
                                     <th class="sortable" onclick="sortTable(6)">User <span class="sort-indicator">⇅</span></th>
                                     <th class="sortable" onclick="sortTable(7)">Status <span class="sort-indicator">⇅</span></th>
@@ -2824,51 +2805,51 @@
                             </thead>
                             <tbody id="deployment-actions-tbody">
                                 <tr>
-                                    <td data-sort="20260325144500">03/25/2026, 02:45 PM</td>
-                                    <td><span class="action-badge action-poison">POISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - cosmic-release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="build-link" target="_blank">1.5.2726</a></td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260325144500">03/25/2026, 02:45 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Critical security vulnerability CVE-2026-1234 detected in authentication module</td>
                                     <td>Jane Doe</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260324161500">03/24/2026, 04:15 PM</td>
-                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - cosmic-release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="build-link" target="_blank">1.5.2720</a></td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260324161500">03/24/2026, 04:15 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Issue resolved - unpoisoned after verification of hotfix deployment</td>
                                     <td>Jane Doe</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260323183200">03/23/2026, 06:32 PM</td>
-                                    <td><span class="action-badge action-poison">POISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - cosmic-release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="build-link" target="_blank">1.5.2718</a></td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260323183200">03/23/2026, 06:32 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Failed integration tests in MSIT environment - blocking deployment progression</td>
                                     <td>Jane Doe</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260322095000">03/22/2026, 09:50 AM</td>
-                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - Release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td data-sort="20260322095000">03/22/2026, 09:50 AM</td>
+                                    <td>SVC-12345</td>
                                     <td>Tests passing - safe to proceed with deployment</td>
                                     <td>John Smith</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260321142000">03/21/2026, 02:20 PM</td>
-                                    <td><span class="action-badge action-poison">POISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - Release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td data-sort="20260321142000">03/21/2026, 02:20 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Memory leak detected during load testing</td>
                                     <td>Sarah Johnson</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
@@ -3122,11 +3103,11 @@
                         <table class="deployment-actions-table">
                             <thead>
                                 <tr>
-                                    <th class="sortable" onclick="sortTable(0)">Timestamp <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(0)">Build Version <span class="sort-indicator">⇅</span></th>
                                     <th class="sortable" onclick="sortTable(1)">Action Type <span class="sort-indicator">⇅</span></th>
-                                    <th class="sortable" onclick="sortTable(2)">Service Tree ID <span class="sort-indicator">⇅</span></th>
-                                    <th class="sortable" onclick="sortTable(3)">Build Pipeline <span class="sort-indicator">⇅</span></th>
-                                    <th class="sortable" onclick="sortTable(4)">Build Version <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(2)">Build Pipeline <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(3)">Timestamp <span class="sort-indicator">⇅</span></th>
+                                    <th class="sortable" onclick="sortTable(4)">Service Tree ID <span class="sort-indicator">⇅</span></th>
                                     <th>Reason</th>
                                     <th class="sortable" onclick="sortTable(6)">User <span class="sort-indicator">⇅</span></th>
                                     <th class="sortable" onclick="sortTable(7)">Status <span class="sort-indicator">⇅</span></th>
@@ -3134,51 +3115,51 @@
                             </thead>
                             <tbody id="deployment-actions-tbody">
                                 <tr>
-                                    <td data-sort="20260325144500">03/25/2026, 02:45 PM</td>
-                                    <td><span class="action-badge action-poison">POISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - cosmic-release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="build-link" target="_blank">1.5.2726</a></td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260325144500">03/25/2026, 02:45 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Critical security vulnerability CVE-2026-1234 detected in authentication module</td>
                                     <td>Jane Doe</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260324161500">03/24/2026, 04:15 PM</td>
-                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - cosmic-release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="build-link" target="_blank">1.5.2720</a></td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260324161500">03/24/2026, 04:15 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Issue resolved - unpoisoned after verification of hotfix deployment</td>
                                     <td>Jane Doe</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260323183200">03/23/2026, 06:32 PM</td>
-                                    <td><span class="action-badge action-poison">POISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - cosmic-release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="build-link" target="_blank">1.5.2718</a></td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SCC - cosmic-release Pipeline</td>
+                                    <td data-sort="20260323183200">03/23/2026, 06:32 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Failed integration tests in MSIT environment - blocking deployment progression</td>
                                     <td>Jane Doe</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260322095000">03/22/2026, 09:50 AM</td>
-                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - Release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td><span class="action-badge action-unpoison">UNPOISON</span></td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td data-sort="20260322095000">03/22/2026, 09:50 AM</td>
+                                    <td>SVC-12345</td>
                                     <td>Tests passing - safe to proceed with deployment</td>
                                     <td>John Smith</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
                                 </tr>
                                 <tr>
-                                    <td data-sort="20260321142000">03/21/2026, 02:20 PM</td>
-                                    <td><span class="action-badge action-poison">POISON</span></td>
-                                    <td>SVC-12345</td>
-                                    <td>SCC - Release Pipeline</td>
                                     <td><a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2710" class="build-link" target="_blank">1.5.2710</a></td>
+                                    <td><span class="action-badge action-poison">POISON</span></td>
+                                    <td>SCC - Release Pipeline</td>
+                                    <td data-sort="20260321142000">03/21/2026, 02:20 PM</td>
+                                    <td>SVC-12345</td>
                                     <td>Memory leak detected during load testing</td>
                                     <td>Sarah Johnson</td>
                                     <td><span class="status-badge status-completed">Completed</span></td>
@@ -3373,7 +3354,7 @@
                 if (view === 'service-viz') {
                     cloudsContainer.style.display = 'flex';
                     viewToggle.style.display = 'flex';
-                } else if (view === 'deployment-actions') {
+                } else if (view === 'poison' || view === 'deployment-actions') {
                     deploymentActionsContainer.style.display = 'block';
                 }
             });
