@@ -283,8 +283,10 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
-            align-items: center;
+            align-items: flex-start;
             margin-top: 8px;
+            width: 90%;
+            max-width: 1400px;
         }
         .cloud-card {
             background: #ffffff;
@@ -295,7 +297,7 @@
             box-shadow: 0 1.6px 3.6px rgba(0,0,0,0.03);
         }
         .cloud-card.public { border-color: #0078d4; }
-        .cloud-card.gal { border-color: #ca5010; }
+        .cloud-card.gcc { border-color: #ca5010; }
         .cloud-card.gcch { border-color: #0b6a0b; }
         .cloud-card.dod { border-color: #8764b8; }
         .cloud-card.usnat { border-color: #e3008c; }
@@ -309,7 +311,7 @@
             border-bottom: 1px solid #e1dfdd;
         }
         .cloud-header.public { color: #0078d4; }
-        .cloud-header.gal { color: #ca5010; }
+        .cloud-header.gcc { color: #ca5010; }
         .cloud-header.gcch { color: #0b6a0b; }
         .cloud-header.dod { color: #8764b8; }
         .cloud-header.usnat { color: #e3008c; }
@@ -532,6 +534,7 @@
         .version-badge.orange { background: #f7630c; }
         .version-badge.yellow { background: #ffaa44; }
         .version-badge.blue { background: #0078d4; }
+        .version-badge.green { background: #107c10; }
         .version-badge.purple { background: #8764b8; }
         .version-number {
             font-family: 'Consolas', 'Courier New', monospace;
@@ -2572,9 +2575,9 @@
                         </div>
                     </div>
                 </div>
-                <!-- GAL Cloud -->
-                <div class="cloud-card gal">
-                    <div class="cloud-header gal">GAL</div>
+                <!-- GCC Cloud -->
+                <div class="cloud-card gcc">
+                    <div class="cloud-header gcc">GCC</div>
                     <div class="rings-list">
                         <div class="ring-item">
                             <div class="ring-header">
