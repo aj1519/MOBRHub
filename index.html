@@ -560,6 +560,36 @@
             font-size: 10px;
             opacity: 0.8;
         }
+        .ongoing-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: #fff4e6;
+            color: #d83b01;
+            border: 1px solid #ffd8b8;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .ongoing-pulse {
+            width: 6px;
+            height: 6px;
+            background: #d83b01;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .version-row.ongoing {
+            background: #fff9f5;
+            border-left: 3px solid #d83b01;
+            padding-left: 8px;
+            margin-left: -8px;
+        }
         .version-timestamp {
             font-size: 10px;
             color: #8a8886;
@@ -2476,10 +2506,14 @@
                                 </div>
                             </div>
                             <div class="deployment-info">
-                                <div class="version-row">
+                                <div class="version-row ongoing">
                                     <div class="version-row-header">
                                         <span class="version-badge pink"></span>
                                         <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="version-number-link" target="_blank">1.5.2726</a>
+                                        <span class="ongoing-indicator">
+                                            <span class="ongoing-pulse"></span>
+                                            Deploying
+                                        </span>
                                     </div>
                                     <span class="version-timestamp">03/24/2026, 10:34 AM</span>
                                 </div>
@@ -2520,10 +2554,14 @@
                                 </div>
                             </div>
                             <div class="deployment-info">
-                                <div class="version-row">
+                                <div class="version-row ongoing">
                                     <div class="version-row-header">
                                         <span class="version-badge yellow"></span>
                                         <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2722" class="version-number-link" target="_blank">1.5.2722</a>
+                                        <span class="ongoing-indicator">
+                                            <span class="ongoing-pulse"></span>
+                                            Deploying
+                                        </span>
                                     </div>
                                     <span class="version-timestamp">03/23/2026, 03:45 PM</span>
                                 </div>
@@ -2556,10 +2594,14 @@
                                 </div>
                             </div>
                             <div class="deployment-info">
-                                <div class="version-row">
+                                <div class="version-row ongoing">
                                     <div class="version-row-header">
                                         <span class="version-badge green"></span>
                                         <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2718" class="version-number-link" target="_blank">1.5.2718</a>
+                                        <span class="ongoing-indicator">
+                                            <span class="ongoing-pulse"></span>
+                                            Deploying
+                                        </span>
                                     </div>
                                     <span class="version-timestamp">03/22/2026, 02:15 PM</span>
                                 </div>
