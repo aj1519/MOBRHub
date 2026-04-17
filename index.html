@@ -1249,8 +1249,66 @@
         .build-list-item.poisoned {
             border-left: 4px solid #a80000;
         }
+        .build-list-item.ongoing {
+            border-left: 4px solid #d83b01;
+            background: #fff9f5;
+        }
         .build-info-section {
             flex: 1;
+        }
+        .ongoing-badge {
+            background: #fff4e6;
+            color: #d83b01;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #ffd8b8;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .ongoing-pulse {
+            width: 8px;
+            height: 8px;
+            background: #d83b01;
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .ring-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            border: 1px solid;
+        }
+        .ring-badge.sdf {
+            background: #f0f9ff;
+            color: #0078d4;
+            border-color: #b3d9ff;
+        }
+        .ring-badge.msit {
+            background: #fff4e6;
+            color: #f7630c;
+            border-color: #ffd8b8;
+        }
+        .ring-badge.prod {
+            background: #f0f9f4;
+            color: #107c10;
+            border-color: #b7e3b5;
+        }
+        .deployment-status-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
         }
         .build-number-large {
             font-size: 16px;
@@ -2729,14 +2787,14 @@
                     </div>
                 </div>
 
-                <!-- Current State Section -->
-                <div id="current-state-section" style="margin-bottom: 48px;">
+                <!-- Ongoing Deployments Section -->
+                <div id="ongoing-deployments-section" style="margin-bottom: 32px;">
                     <div class="poisoned-builds-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
                         <div>
-                            <h3 style="margin-bottom: 4px;">Currently Poisoned Builds</h3>
+                            <h3 style="margin-bottom: 4px;">Ongoing Deployments</h3>
                             <div style="display: flex; align-items: center; gap: 12px;">
-                                <span class="poisoned-count-badge">2 Active</span>
-                                <span style="font-size: 12px; color: #8a8886;">• Last 3 months</span>
+                                <span class="ongoing-badge"><span class="ongoing-pulse"></span>3 In Progress</span>
+                                <span style="font-size: 12px; color: #8a8886;">• Active deployments across all rings</span>
                             </div>
                         </div>
                         <div style="display: flex; gap: 12px;">
@@ -2752,10 +2810,73 @@
                     </div>
 
                     <div class="builds-list">
-                        <div class="build-list-item poisoned">
+                        <div class="build-list-item ongoing">
+                            <div class="build-info-section">
+                                <div class="build-number-large">
+                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2722" class="build-number-link" target="_blank">Build 1.5.2722</a>
+                                </div>
+                                <div class="build-meta-info">
+                                    <span class="build-meta-item">🕐 Started 03/24/2026, 06:30 PM</span>
+                                    <span class="build-meta-item">👤 By John Smith</span>
+                                </div>
+                                <div class="deployment-status-row">
+                                    <span style="font-size: 12px; color: #605e5c;">Currently deploying to:</span>
+                                    <span class="ring-badge msit"><span class="version-badge orange" style="width: 6px; height: 6px;"></span>MSIT</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="build-list-item ongoing">
+                            <div class="build-info-section">
+                                <div class="build-number-large">
+                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2720" class="build-number-link" target="_blank">Build 1.5.2720</a>
+                                </div>
+                                <div class="build-meta-info">
+                                    <span class="build-meta-item">🕐 Started 03/24/2026, 04:15 PM</span>
+                                    <span class="build-meta-item">👤 By Jane Doe</span>
+                                </div>
+                                <div class="deployment-status-row">
+                                    <span style="font-size: 12px; color: #605e5c;">Currently deploying to:</span>
+                                    <span class="ring-badge prod"><span class="version-badge green" style="width: 6px; height: 6px;"></span>PROD (Canary)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="build-list-item ongoing">
                             <div class="build-info-section">
                                 <div class="build-number-large">
                                     <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2726" class="build-number-link" target="_blank">Build 1.5.2726</a>
+                                </div>
+                                <div class="build-meta-info">
+                                    <span class="build-meta-item">🕐 Started 03/24/2026, 10:34 AM</span>
+                                    <span class="build-meta-item">👤 By Sarah Lee</span>
+                                </div>
+                                <div class="deployment-status-row">
+                                    <span style="font-size: 12px; color: #605e5c;">Currently deploying to:</span>
+                                    <span class="ring-badge sdf"><span class="version-badge blue" style="width: 6px; height: 6px;"></span>SDF</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Current State Section -->
+                <div id="current-state-section" style="margin-bottom: 48px;">
+                    <div class="poisoned-builds-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <div>
+                            <h3 style="margin-bottom: 4px;">Currently Poisoned Builds</h3>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <span class="poisoned-count-badge">2 Active</span>
+                                <span style="font-size: 12px; color: #8a8886;">• Blocked from deployment</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="builds-list">
+                        <div class="build-list-item poisoned">
+                            <div class="build-info-section">
+                                <div class="build-number-large">
+                                    <a href="https://skype.visualstudio.com/SCC/_build/results?buildId=2725" class="build-number-link" target="_blank">Build 1.5.2725</a>
                                 </div>
                                 <div class="build-meta-info">
                                     <span class="build-meta-item">🕐 Poisoned on 03/25/2026, 02:45 PM</span>
